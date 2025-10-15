@@ -1,0 +1,77 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
+using V9MvcCoreProject.Entities.Models;
+using V9MvcCoreProject.Extensions.LogsHelpers.Interface;
+
+namespace V9MvcCoreProject.Helpers;
+
+public class BaseController : Controller
+{
+    public IActivityHistory _ActivityLog;
+    public BaseController(IActivityHistory ActivityLog)
+    {
+        _ActivityLog = ActivityLog;
+    }
+    public async Task<int> GetLogedInUserId()
+    {
+        int userId = 0;
+        var user = HttpContext.User.Claims
+            .Where(x => x.Type == "UserId")
+            .FirstOrDefault();
+
+        if (user != null)
+            userId = Convert.ToInt32(user.Value);
+
+        return userId;
+    }
+
+    //public bool ReadOnlyMode(SetUpForm setUpForm, MakerAction action, int referenceId)
+    //{
+    //    bool lockRecord = false;
+
+    //    lockRecord = Task.Run(async () => await _IMakerCheckerService.LockRecord(setUpForm, action, referenceId)).Result;
+
+
+    //    return lockRecord;
+
+    //    //return false;
+    //}
+    //public bool OnBoardingReadOnlyMode(SetUpForm setUpForm, int referenceId)
+    //{
+    //    bool lockRecord = false;
+
+    //    lockRecord = Task.Run(async () => await _IMakerCheckerService.LockOnBoardingRecord(setUpForm, referenceId)).Result;
+
+
+    //    return lockRecord;
+
+    //    //return false;
+    //}
+
+    public string GetRecordStatus(int stateId)
+    {
+        return stateId switch
+        {
+            1 => "Change Request",
+
+            2 => "Remove Request",
+
+            _ => string.Empty,
+        };
+    }
+    public async Task<bool> InsertActivityInsert(object Oldvalue, object NewValue, string Action, [CallerMemberName] string caller = null)
+    {
+        bool status = true;
+        UserHistoryLogs history = new UserHistoryLogs();
+        history.OldValueJson = Oldvalue != null ? JsonSerializer.Serialize(Oldvalue) : "";
+        history.NewValueJson = NewValue != null ? JsonSerializer.Serialize(NewValue) : "";
+        history.Action = Action;
+        history.ActionMethod = caller;
+        history.UserId = await GetLogedInUserId();
+        history.LogId = HttpContext.Session.GetString("logId");
+        status = await _ActivityLog.SaveActivityLogs(history);
+        return status;
+    }
+
+}

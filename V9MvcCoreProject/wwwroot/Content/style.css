@@ -1,0 +1,44 @@
+.mt--40 {
+  margin-top: 40px; }
+
+.mt--60 {
+  margin-top: 60px; }
+
+
+.mt--100 {
+    margin-top: 100px;
+}
+.mt--150 {
+    margin-top: 150px;
+}
+.btn-custom {
+    margin-left: -14px;
+    margin-top: 10px;
+}
+.custon-con {
+margin-top:150px
+}
+
+.text-center {
+    text-align: center;
+}
+.login {
+    font-size: 40px;
+    text-transform: uppercase;
+}
+.btn-login {
+    margin-left: -25px;
+    margin-top: 10px;
+    width: 200px;
+}
+
+
+.display-flex {
+  display: flex; }
+  .display-flex.just-content-between {
+    justify-content: space-between; }
+
+.checked-box {
+  display: none; }
+
+/*# sourceMappingURL=style.css.map */

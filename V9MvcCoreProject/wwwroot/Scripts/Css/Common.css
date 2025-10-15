@@ -1,0 +1,136 @@
+﻿.blockPage {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+
+/*Start - Report CSS*/
+.dvReport {
+    background-color: #ffffff;
+    overflow: auto;
+    width: 98%;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #000000;
+}
+
+.reportHeading {
+    text-align: center;
+    font-weight: bold;
+    color:#000000;
+}
+
+.reportCaption {
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+}
+
+.FontRed {
+    color: red;
+}
+
+.BoldLeft {
+    text-align: left;
+    font-weight: bold;
+}
+
+.BoldLeftRed {
+    text-align: left;
+    font-weight: bold;
+    color: red;
+}
+
+.GreyColor {
+    background-color: #c6c8ca;
+}
+
+.YellowColor {
+    background-color: yellow;
+}
+
+.GreenColor {
+    background-color: green;
+}
+
+.BlueColor {
+    background-color: blue;
+}
+
+.LightGreenNormal {
+    background-color: #4cff00;
+    font-weight:normal;  
+}
+
+.GoldColor {
+    background-color: gold;
+}
+
+.BlueColorBold {
+    background-color: blue;
+    font-weight: bold;
+}
+
+.GreyColorDark {
+    background-color: #808080;
+}
+
+.WhiteColorBoldLeft {
+    background-color: white;
+    font-weight: bold;
+    text-align: left
+}
+
+.CenterBold {
+    text-align: center;
+    font-weight: bold;
+}
+
+.TextCenter {
+    text-align: center !important;
+}
+
+.TextRight {
+    text-align: right !important;
+}
+table#MatrixTable input {
+    width: 100%;
+    padding: 8px;
+}
+.tb-mm-col input {
+    width: 28%;
+}
+span.tb-mm-sp {
+    line-height: 38px;
+}
+tbody#TableBody tr:first-child td {
+    background: #444;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 0.45px;
+}
+/*End - Report CSS*/
+
+
+.modal-dialog {
+    height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-dialog {
+    height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#kt_modal_1_2 .modal-dialog {
+    min-width: 900px;
+}
+
+.table-width {
+  width: 100%!important;
+}

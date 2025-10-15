@@ -1,0 +1,358 @@
+﻿@model V9MvcCoreProject.Entities.ViewModels.RegisterViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Common Styles -->
+    <link rel="icon" type="image/x-icon" href="~/Favicon//favicon.ico">
+    <link href="~/Content/font-family/font-files.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/Common.css" rel="stylesheet" />
+    <link href="~/Scripts/SweetAlert/dist/sweetalert2.css" rel="stylesheet" />
+
+    <style>
+        /* ---------- General Reset ---------- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ---------- Wrapper + Background ---------- */
+        #fontStyle {
+            font-family: 'Times New Roman';
+        }
+
+        /* ---------- Wrapper + Layout ---------- */
+        .auth-wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bubble-wrapper {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3219a1, #008cff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 0;
+            padding: 1rem;
+        }
+
+        /* ---------- Login Card ---------- */
+        .auth-card {
+            background: rgba(24, 86, 211, 0.92);
+            padding: 2rem 2.5rem;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 360px;
+            z-index: 1;
+            color: #fff;
+            text-align: center;
+        }
+
+            .auth-card h1 {
+                margin-bottom: 1.5rem;
+                font-size: 1.8rem;
+            }
+
+        /* ---------- Input Field Styling ---------- */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .auth-card input[type="text"],
+        .auth-card input[type="password"] {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            font-family: 'Calisto MT';
+        }
+
+        /* ---------- Error Message Styling ---------- */
+        .form-error {
+            color: #ff0c0c;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            margin-left: 4px;
+        }
+
+        /* ---------- Button Styling ---------- */
+        .btn-login {
+            background-color: #4393d9;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            padding: 0.75rem 0;
+            border-radius: 6px;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+            width: 40%;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Times New Roman';
+        }
+
+            .btn-login:hover {
+                background-color: #0c2ace;
+            }
+
+        /* ---------- Footer ---------- */
+        .auth-footer {
+            text-align: center;
+            margin-top: 1rem;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+            .auth-footer a {
+                color: #fffc;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .auth-footer a:hover {
+                    color: #fff;
+                    text-decoration: underline;
+                }
+
+        /* ---------- Bubble Animation ---------- */
+        .colorlib-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+            .colorlib-bubbles li {
+                position: absolute;
+                display: block;
+                list-style: none;
+                width: 40px;
+                height: 40px;
+                background: rgba(255, 255, 255, 0.15);
+                bottom: -160px;
+                animation: square 10s infinite linear;
+                border-radius: 50%;
+            }
+
+                .colorlib-bubbles li:nth-child(1) {
+                    left: 10%;
+                }
+
+                .colorlib-bubbles li:nth-child(2) {
+                    left: 20%;
+                    width: 80px;
+                    height: 80px;
+                    animation-delay: 2s;
+                    animation-duration: 17s;
+                }
+
+                .colorlib-bubbles li:nth-child(3) {
+                    left: 25%;
+                    animation-delay: 4s;
+                }
+
+                .colorlib-bubbles li:nth-child(4) {
+                    left: 40%;
+                    width: 60px;
+                    height: 60px;
+                    animation-duration: 22s;
+                    background: rgba(255,255,255,0.25);
+                }
+
+                .colorlib-bubbles li:nth-child(5) {
+                    left: 70%;
+                }
+
+                .colorlib-bubbles li:nth-child(6) {
+                    left: 80%;
+                    width: 120px;
+                    height: 120px;
+                    animation-delay: 3s;
+                    background: rgba(255,255,255,0.2);
+                }
+
+                .colorlib-bubbles li:nth-child(7) {
+                    left: 32%;
+                    width: 160px;
+                    height: 160px;
+                    animation-delay: 7s;
+                }
+
+                .colorlib-bubbles li:nth-child(8) {
+                    left: 55%;
+                    width: 20px;
+                    height: 20px;
+                    animation-delay: 15s;
+                    animation-duration: 40s;
+                }
+
+                .colorlib-bubbles li:nth-child(9) {
+                    left: 25%;
+                    width: 10px;
+                    height: 10px;
+                    animation-delay: 2s;
+                    animation-duration: 40s;
+                    background: rgba(255,255,255,0.3);
+                }
+
+                .colorlib-bubbles li:nth-child(10) {
+                    left: 90%;
+                    width: 160px;
+                    height: 160px;
+                    animation-delay: 11s;
+                }
+
+        @@keyframes square {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ---------- Spinner Overlay ---------- */
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+            .spinner-overlay.active {
+                visibility: visible;
+                opacity: 1;
+            }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #1976d2;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Loading Spinner -->
+    <div class="spinner-overlay" id="spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="auth-wrapper">
+        <div class="bubble-wrapper">
+            <div class="auth-card">
+                <h1 id="fontStyle">Sign In</h1>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <input type="text" name="cnic" placeholder="Enter CNIC" class="form-control" />
+                        <p class="form-error" id="cnic-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="username" placeholder="Enter Username" class="form-control" />
+                        <p class="form-error" id="username-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="email" placeholder="Enter Email" class="form-control" />
+                        <p class="form-error" id="email-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Enter Password" class="form-control" />
+                        <p class="form-error" id="password-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="confirmpassword" placeholder="Enter Confirm Password" class="form-control" />
+                        <p class="form-error" id="confirmpassword-error"></p>
+                    </div>
+
+                    <button id="fontStyle" type="button" class="btn-login" onclick="Register()">Submit</button>
+
+                    <div class="auth-footer">
+                        <p>
+                            You account is already created please login. <a href="@Url.Action("Login", "User")" class="elements">
+                                <span>SignIn</span>
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <ul class="colorlib-bubbles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Content/js/jquery.js"></script>
+    <script src="~/ViewsScripts/RegisterUser.js"></script>
+
+</body>
+</html>

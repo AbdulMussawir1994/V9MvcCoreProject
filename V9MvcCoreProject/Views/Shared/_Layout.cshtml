@@ -1,0 +1,631 @@
+﻿@{
+    @using V9MvcCoreProject.Entities.Models
+    @using V9MvcCoreProject.Entities.ViewModels
+
+
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    var nameObj = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Name");
+    var UserObj = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId");
+    var name = nameObj?.Value ?? "User";
+    var userID = UserObj?.Value ?? "0";
+    var userpermissions = Context.Session.GetString("UserPermissions");
+    var DynamicMenu = Context.Session.GetString("DynamicMenu");
+    var serializedpermissions = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserPermissionsViewModel>>(userpermissions);
+    var SerializedMenu = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Items>>(DynamicMenu);
+    var aass = serializedpermissions;
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
+    var route = $"{controllerName}/{actionName}";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Koperasi Tentera</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- 🔗 Existing CSS Libraries -->
+    <link rel="icon" type="image/x-icon" href="~/Favicon//favicon.ico">
+    <link href="~/Content/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="~/Content/css/style.bundle.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/Common.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/select2.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/line-awesome/css/line-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/cust-style.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/bootstrap-datepicker3.css" rel="stylesheet" />
+    <link href="~/Scripts/Css/daterangepicker.css" rel="stylesheet" />
+    <link href="~/Scripts/SweetAlert/dist/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/css/blink-theme.css" rel="stylesheet" />
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: "Segoe UI", sans-serif;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        /* ===================== SIDEBAR ===================== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100vh;
+            background: #2c3e50;
+            color: #ecf0f1;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+            .sidebar.open {
+                width: 240px;
+            }
+
+            .sidebar .logo {
+                text-align: center;
+                padding: 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .sidebar ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                flex: 1;
+                overflow-y: auto;
+            }
+
+                .sidebar ul li a {
+                    color: #ecf0f1;
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    padding: 12px 20px;
+                    font-size: 15px;
+                    transition: background 0.3s;
+                }
+
+                    .sidebar ul li a i {
+                        font-size: 12px;
+                        margin-left: 5%;
+                        margin-top: 1%;
+                    }
+
+                    .sidebar ul li a:hover {
+                        background: #34495e;
+                    }
+
+        /* ===================== MAIN ===================== */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar.open ~ .main {
+            margin-left: 0;
+        }
+
+            /* target header and content via the .main sibling */
+            .sidebar.open ~ .main .header,
+            .sidebar.open ~ .main #mainContent {
+                margin-left: 12%;
+                transition: margin-left 0.3s ease;
+            }
+
+        /* reset when sidebar is closed (optional if you have defaults) */
+        .sidebar ~ .main .header,
+        .sidebar ~ .main #mainContent {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Bullet dot base style */
+        .kt-menu__link-bullet {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            margin-right: 6px;
+        }
+
+        /* Dot style */
+        .kt-menu__link-bullet--dot span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #007bff; /* Blue dot — change color as needed */
+            border-radius: 50%;
+        }
+
+        /* Optional: hover color change */
+        .kt-menu__link:hover .kt-menu__link-bullet--dot span {
+            background-color: #0056b3;
+        }
+
+        /* Menu link text alignment */
+        .kt-menu__link-text {
+            vertical-align: middle;
+        }
+
+        .kt-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 240px;
+            background: #2c3e50;
+            color: white;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .kt-menu__item {
+            position: relative;
+        }
+
+        .kt-menu__link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+            .kt-menu__link:hover {
+                background: #34495e;
+            }
+
+        .kt-menu__link-icon {
+            margin-right: 10px;
+        }
+
+        .kt-menu__ver-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .kt-menu__item.open > .kt-menu__link .kt-menu__ver-arrow {
+            transform: rotate(90deg);
+        }
+
+        .kt-menu__submenu {
+            display: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .kt-menu__item.open > .kt-menu__submenu {
+            display: block;
+        }
+
+        .kt-menu__link-bullet {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            margin-right: 6px;
+        }
+
+        .kt-menu__link-bullet--dot span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #00bfff;
+            border-radius: 50%;
+        }
+
+        .kt-menu__subnav .kt-menu__link {
+            padding-left: 32px;
+            font-size: 14px;
+        }
+
+        /* ===================== OPTIONAL ===================== */
+        .optional {
+            transition: margin-left 0.3s ease;
+            margin-left: 0;
+        }
+
+          .sidebar.open ~ .header .optional {
+            margin-left: 240px;
+        }
+
+        /* ===================== HEADER ===================== */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .toggle-btn, .night-btn {
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+            transition: transform 0.2s;
+        }
+
+            .toggle-btn:hover, .night-btn:hover {
+                transform: scale(1.1);
+            }
+
+        #mainTabs{
+            position: fixed; /* Keeps it visible even when scrolling */
+            right: 0; /* Align to right */
+            width:32%; /* Full width */
+            display: flex; /* Flexbox for clean layout */
+            justify-content: flex-end; /* Items aligned to right */
+            align-items: center; /* Vertically centered */
+            gap: 20px; /* Space between elements */
+            padding: 0 20px; /* Left-right padding */
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+            #mainTabs a.kt-nav__link {
+                color: #dc3545;
+                font-weight: 500;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+                #mainTabs a.kt-nav__link:hover {
+                    color: #a71d2a;
+                }
+
+
+        /* ===================== CONTENT ===================== */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f4f6f8;
+        }
+
+        /* ===================== FOOTER ===================== */
+        .cust-footer {
+            background: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* ===== Menu Styling (blends with your dark theme) ===== */
+        .menu-item {
+            position: relative;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: background 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+
+            .menu-link:hover {
+                background: #34495e;
+                color: #fff;
+            }
+
+            .menu-link i {
+                margin-right: 10px;
+            }
+
+        /* Submenu hidden by default */
+        .submenu {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+            background: #32465a;
+            margin: 0;
+        }
+
+            /* Submenu items */
+            .submenu li a {
+                color: #bdc3c7;
+                padding: 8px 20px;
+                display: block;
+                font-size: 14px;
+                text-decoration: none;
+            }
+
+                .submenu li a:hover {
+                    background: #3b556e;
+                    color: #fff;
+                }
+
+        /* Open state */
+        .menu-item.open > .submenu {
+            display: block;
+        }
+
+        .arrow {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .menu-item.open > .menu-link .arrow {
+            transform: rotate(90deg);
+        }
+
+        /* ===================== NIGHT MODE ===================== */
+        body.dark-mode {
+            background: #121212;
+            color: #eaeaea;
+        }
+
+            body.dark-mode .sidebar {
+                background: #1e272e;
+                color: #ccc;
+            }
+
+            body.dark-mode .header {
+                background: #2f3640;
+                color: #fff;
+            }
+
+            body.dark-mode .content {
+                background: #1b1b1b;
+                color: #eee;
+            }
+
+            body.dark-mode .cust-footer {
+                background: #2f3640;
+                color: #ccc;
+            }
+
+        /* ===================== RESPONSIVE ===================== */
+        @@media (max-width: 768px) {
+            .sidebar {
+                left: -240px;
+                width: 240px;
+            }
+
+                .sidebar.open ~ .main .header,
+                .sidebar.open ~ .main #mainContent {
+                    margin-left: 0 !important;
+                }
+
+                .sidebar.open {
+                    left: 0;
+                }
+
+            .main {
+                margin-left: 0 !important;
+            }
+
+            .optional {
+                margin-left: 60% !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo"></div>
+        <ul class="kt-menu__nav ">
+
+            <li class="kt-menu__item " aria-haspopup="true">
+                <a href="/Home/Index" class="kt-menu__link ">
+                    <span class="kt-menu__link-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24" />
+                                <path d="M12.9336061,16.072447 L19.36,10.9564761 L19.5181585,10.8312381 C20.1676248,10.3169571 20.2772143,9.3735535 19.7629333,8.72408713 C19.6917232,8.63415859 19.6104327,8.55269514 19.5206557,8.48129411 L12.9336854,3.24257445 C12.3871201,2.80788259 11.6128799,2.80788259 11.0663146,3.24257445 L4.47482784,8.48488609 C3.82645598,9.00054628 3.71887192,9.94418071 4.23453211,10.5925526 C4.30500305,10.6811601 4.38527899,10.7615046 4.47382636,10.8320511 L4.63,10.9564761 L11.0659024,16.0730648 C11.6126744,16.5077525 12.3871218,16.5074963 12.9336061,16.072447 Z" fill="#000000" fill-rule="nonzero" />
+                                <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
+                            </g>
+                        </svg>
+                    </span><span class="kt-menu__link-text">Dashboard</span>
+                </a>
+            </li>
+
+            @*Starts From Here*@
+
+            @foreach (var item in SerializedMenu)
+            {
+                if (item.SubMenuItems.Count > 0)
+                {
+                    <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+                        <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                            <span class="kt-menu__link-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24"
+                                     version="1.1" class="kt-svg-icon">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5" />
+                                        <path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20
+                                                                 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288
+                                                                 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5
+                                                                 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271
+                                                                  19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z"
+                                              fill="#000000" opacity="0.3" />
+                                    </g>
+                                </svg>
+                            </span>
+
+                            <span class="kt-menu__link-text">@item.ItemName</span>
+                            <i class="kt-menu__ver-arrow la la-angle-right"></i>
+
+                        </a>
+                        <div class="kt-menu__submenu ">
+                            <span class="kt-menu__arrow"></span>
+                            <ul class="kt-menu__subnav">
+                                @*                                 <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true">
+                                    <span class="kt-menu__link">
+                                        <span class="kt-menu__link-text">Utils</span>
+                                    </span>
+                                </li> *@
+                                @foreach (var SubMenuItems in item.SubMenuItems)
+                                {
+                                    if (SubMenuItems.submenuItem != "View Onboarding Summary")
+                                    {
+                                        <li class="kt-menu__item " aria-haspopup="true">
+                                            <a href="@SubMenuItems.NavigationLink" class="kt-menu__link ">
+                                                <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">
+                                                    @SubMenuItems.submenuItem
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                }
+            }
+            @*End Here*@
+
+            @*User Logs End*@
+
+        </ul>
+    </div>
+
+    <!-- ===================== MAIN ===================== -->
+    <div class="main">
+        <div class="header">
+            <div class="optional">
+                <button id="toggleSidebar" class="toggle-btn"><i class="fa fa-bars"></i></button>
+            </div>
+            <div id="mainTabs">
+                @*                 <span>Hello: @nameObj.Value.ToUpper()  <strong></strong></span> *@
+                <button id="toggleTheme" class="night-btn" title="Toggle Night Mode">
+                    <i class="fa fa-moon-o"></i>
+                </button>
+                @* <a href="@Url.Action("LogOut", "User")" class="ml-3 text-danger"><i class="fa fa-sign-out"></i></a> *@
+
+                @using (Html.BeginForm("LogOut", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <a href="javascript:void(0)" class="kt-nav__link" onclick="document.getElementById('logoutForm').submit();">
+                        <i class="fa fa-sign-out mr-2"></i> Logout
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="content" id="mainContent">
+            @RenderBody()
+        </div>
+
+        <div class="cust-footer">
+            &copy; All rights reserved, <strong>Codebase Technologies</strong> 2024
+        </div>
+    </div>
+
+
+    <!-- 🔗 Existing JS Libraries -->
+    <script src="~/Content/js/jquery.js"></script>
+    <script src="~/Content/js/js.cookie.js"></script>
+    <script src="~/Content/js/perfect-scrollbar.js"></script>
+    <script src="~/Content/js/sticky.min.js"></script>
+    <script src="~/Content/js/scripts.bundle.js"></script>
+    <script src="~/Scripts/jquery.blockUI.min.js"></script>
+    <script src="~/Scripts/select2.full.js"></script>
+    <script src="~/Scripts/bootstrap-select.js"></script>
+    <script src="~/Scripts/select2.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/CommonJs.js"></script>
+    <script src="~/Scripts/SweetAlert/dist/sweetalert2.min.js"></script>
+    <script src="~/Scripts/SweetAlert/sweetalert2.init.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Content/js/popper.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+
+    <!-- JS -->
+    <script>
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.getElementById("toggleSidebar");
+        const body = document.body;
+        const themeBtn = document.getElementById("toggleTheme");
+
+        // 🧭 Sidebar toggle
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+        });
+
+        // 🌙 Night mode (persistent)
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+            body.classList.add("dark-mode");
+            themeBtn.innerHTML = `<i class="fa fa-sun-o"></i>`;
+        }
+
+        themeBtn.addEventListener("click", () => {
+            const isDark = body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            themeBtn.innerHTML = isDark
+                ? `<i class="fa fa-sun-o"></i>`
+                : `<i class="fa fa-moon-o"></i>`;
+        });
+
+                // Expand/Collapse submenus
+        document.querySelectorAll('.menu-item.has-submenu > .menu-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const parent = link.parentElement;
+                parent.classList.toggle('open');
+
+                // Close other open menus (optional)
+                document.querySelectorAll('.menu-item.has-submenu').forEach(item => {
+                    if (item !== parent) item.classList.remove('open');
+                });
+            });
+        });
+
+                document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".kt-menu__toggle").forEach(function (toggle) {
+                toggle.addEventListener("click", function () {
+                    const parent = this.closest(".kt-menu__item--submenu");
+                    parent.classList.toggle("open");
+                });
+            });
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

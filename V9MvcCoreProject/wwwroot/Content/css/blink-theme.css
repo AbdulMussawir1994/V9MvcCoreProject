@@ -1,0 +1,93 @@
+﻿.kt-aside,
+.kt-aside-menu {
+    background-color: #000000;
+}
+.kt-aside__brand {
+    background: #FFE816;
+}
+
+.kt-aside-menu .kt-menu__nav > .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover > .kt-menu__link,
+.kt-aside-menu .kt-menu__nav > .kt-menu__item.kt-menu__item--open > .kt-menu__link,
+.kt-aside-menu .kt-menu__nav > .kt-menu__item .kt-menu__submenu .kt-menu__item:not(.kt-menu__item--parent):not(.kt-menu__item--open):not(.kt-menu__item--here):not(.kt-menu__item--active):hover > .kt-menu__link {
+    background-color: red;
+}
+
+.btn-primary,
+.btn-default,
+button#kt_login_signin_submit {
+    background: #FFE816 !important;
+    color: #000000 !important;
+}
+
+.btn-default i {
+    color: #000000 !important;
+}
+
+.btn-primary:hover,
+.btn-default:hover,
+button#kt_login_signin_submit:hover {
+    background: #FFF386 !important;
+}
+
+button.btn.btn-secondary {
+    background: #000000;
+    
+}
+button.btn.btn-secondary:hover {
+    background: #404040;
+}
+
+.kt-badge.kt-badge--unified-success {
+    background: #3CB4E5;
+}
+
+table thead tr th, table thead tr td,
+.dataTables_wrapper .dataTable thead th, 
+.dataTables_wrapper .dataTable thead td,
+.custom-table table thead tr th {
+    background: #5E5E5E !important;
+}
+
+.kt-grid--hor.kt-login {
+    background: rebeccapurple !important;
+}
+.kt-grid--hor.kt-login .kt-grid--hor {
+    background: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: none;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #FFE816 !important;
+    color: #000000 !important;
+    border: none;
+}
+
+.custom-tabs .item {
+    position: relative;
+}
+
+.custom-tabs .item::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    top: 20px;
+    width: 40px;
+    height: 2px;
+    background: #000;
+    border-radius: 4px;
+}
+.custom-tabs .item:last-of-type::after {
+    display: none;
+}
+
+.panel-primary>.panel-heading {
+    background-color: #000 !important;
+    border-color: #000 !important;
+}
+
+.panel {
+    border-color: #000 !important;
+}

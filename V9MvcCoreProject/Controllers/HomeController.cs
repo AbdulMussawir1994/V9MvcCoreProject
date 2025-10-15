@@ -1,0 +1,27 @@
+using Microsoft.AspNetCore.Mvc;
+using V9MvcCoreProject.Middleware.PermissionAttribute;
+
+namespace V9MvcCoreProject.Controllers;
+
+public class HomeController : Controller
+{
+    private readonly ILogger<HomeController> _logger;
+
+    public HomeController(ILogger<HomeController> logger)
+    {
+        _logger = logger;
+    }
+
+    [CheckUserPermission]
+    // [AllowAnonymous]
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    [CheckUserPermission]
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+}
