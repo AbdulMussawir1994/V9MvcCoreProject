@@ -113,7 +113,7 @@ function Register() {
     // 🔹 Example: Ajax POST request
     $.ajax({
         type: "POST",
-        url: "/User/Register",
+        url: "/Account/Register",
         data: data,
         success: function (response) {
             hideSpinner();

@@ -22,7 +22,7 @@ public partial class Employee
     public bool IsActive { get; set; } = true;
 
     [Required]
-    public int ApplicationUserId { get; set; }
+    public string ApplicationUserId { get; set; }
 
     [ForeignKey(nameof(ApplicationUserId))]
     public virtual ApplicationUser AppUser { get; set; } = null!;

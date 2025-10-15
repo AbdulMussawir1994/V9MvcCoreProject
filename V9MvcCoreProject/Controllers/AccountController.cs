@@ -36,18 +36,6 @@ public class AccountController : Controller
         return View(response);
     }
 
-    //[HttpPost]
-    //[AllowAnonymous]
-    //public async Task<JsonResult> LoginUser(LoginViewModel user)
-    //{
-    //    var userLoginLog = new UserLoginLogs();
-
-    //    var isActiveResponse = await _userService.CheckUserStatusAsync(user.CNIC);
-
-
-
-    //}
-
     [HttpPost]
     [AllowAnonymous]
     public async Task<JsonResult> Login(LoginViewModel user, string ReturnUrl)
@@ -117,7 +105,7 @@ public class AccountController : Controller
             }
             else
             {
-                userLoginLog.UserId = 0;
+                userLoginLog.UserId = "Unknown";
                 userLoginLog.LoginTime = DateTime.Now;
                 userLoginLog.UserName = user.CNIC;
                 userLoginLog.LoginStatus = false;
