@@ -12,16 +12,29 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    [CheckUserPermission]
+    [ServiceFilter(typeof(CheckUserPermission))]
     // [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
     }
 
-    [CheckUserPermission]
+    [ServiceFilter(typeof(CheckUserPermission))]
     public IActionResult Privacy()
     {
         return View();
     }
+
+    [ServiceFilter(typeof(CheckUserPermission))]
+    public IActionResult Test()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public IActionResult Unauthorize()
+    {
+        return View();
+    }
+
 }

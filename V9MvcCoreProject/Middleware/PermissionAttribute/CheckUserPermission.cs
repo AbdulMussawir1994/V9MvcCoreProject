@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using V9MvcCoreProject.Entities.ViewModels;
 
@@ -7,42 +8,52 @@ namespace V9MvcCoreProject.Middleware.PermissionAttribute;
 
 public class CheckUserPermission : ActionFilterAttribute
 {
+    private readonly IMemoryCache _cache;
+    private readonly ILogger<CheckUserPermission> _logger;
+
+    public CheckUserPermission(IMemoryCache cache, ILogger<CheckUserPermission> logger)
+    {
+        _cache = cache;
+        _logger = logger;
+    }
+
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         var httpContext = context.HttpContext;
-        var session = httpContext.Session;
+        var routeData = httpContext.GetRouteData().Values;
 
-        // Get user permissions directly from session
-        var permissionsJson = session.GetString("UserPermissions");
-        if (string.IsNullOrEmpty(permissionsJson))
+        string? controller = routeData["controller"]?.ToString();
+        string? action = routeData["action"]?.ToString();
+
+        // --- Validate session ---
+        string? sessionPermissions = httpContext.Session.GetString("UserPermissions");
+        if (string.IsNullOrEmpty(sessionPermissions))
         {
             context.Result = new RedirectResult("~/Account/Login");
             return;
         }
 
-        // Quickly deserialize (safe check)
-        if (!TryDeserialize(permissionsJson, out List<UserPermissionsViewModel>? permissions))
+        // --- Try get cached permissions for this session ---
+        string cacheKey = $"permissions-{httpContext.Session.Id}";
+        if (!_cache.TryGetValue(cacheKey, out List<UserPermissionsViewModel>? permissions))
         {
-            context.Result = new RedirectResult("~/Account/Login");
-            return;
+            permissions = JsonConvert.DeserializeObject<List<UserPermissionsViewModel>>(sessionPermissions) ?? new();
+            _cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(10)); // cache for 10 minutes
         }
 
-        // Get route data
-        var routeValues = httpContext.GetRouteData().Values;
-        string action = routeValues["action"]?.ToString() ?? string.Empty;
-        string controller = routeValues["controller"]?.ToString() ?? string.Empty;
-
-        // Match permission
+        // --- Check permission ---
         bool isAllowed = permissions.Any(p =>
-            string.Equals(p.ActionMethodName, action, StringComparison.OrdinalIgnoreCase) &&
-            (string.IsNullOrEmpty(p.ControllerName) || string.Equals(p.ControllerName, controller, StringComparison.OrdinalIgnoreCase))
+            p.ActionMethodName.Equals(action, StringComparison.OrdinalIgnoreCase) &&
+            (string.IsNullOrEmpty(p.ControllerName) || p.ControllerName.Equals(controller, StringComparison.OrdinalIgnoreCase))
         );
 
-        bool isAjax = IsAjaxRequest(httpContext.Request);
-        //    bool isAjax = AjaxRequest.IsAjaxRequest(httpContext.Request);
+        bool isAjax = httpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
 
         if (!isAllowed)
         {
+            _logger.LogWarning("Unauthorized access by user. Controller={Controller}, Action={Action}, IsAjax={IsAjax}",
+                controller, action, isAjax);
+
             context.Result = isAjax
                 ? new UnauthorizedResult()
                 : new RedirectResult("~/Home/Unauthorize");
@@ -50,25 +61,5 @@ public class CheckUserPermission : ActionFilterAttribute
         }
 
         base.OnActionExecuting(context);
-    }
-
-    private static bool TryDeserialize(string json, out List<UserPermissionsViewModel>? list)
-    {
-        try
-        {
-            list = JsonConvert.DeserializeObject<List<UserPermissionsViewModel>>(json);
-            return list != null;
-        }
-        catch
-        {
-            list = null;
-            return false;
-        }
-    }
-
-    private static bool IsAjaxRequest(HttpRequest request)
-    {
-        return request.Headers.TryGetValue("X-Requested-With", out var value)
-               && string.Equals(value, "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
     }
 }
