@@ -146,13 +146,15 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 // 5️⃣ DEPENDENCY INJECTION
 // ===========================================================
 builder.Services.AddSingleton<AesGcmEncryption>();
-builder.Services.AddScoped<CheckUserPermission>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<CheckUserPermission>();
 
 builder.Services.AddScoped<IUserServiceLayer, UserServiceLayer>();
 builder.Services.AddScoped<IUserAccessServiceLayer, UserAccessServiceLayer>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<ILoggerManager, LoggerManager>();
+builder.Services.AddScoped<IPermissionTemplateLayer, PermissionTemplateLayer>();
+builder.Services.AddScoped<IActivityHistory, ActivityHistory>();
 
 // PDF Generation (wkhtmltopdf)
 var pdfLibPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "libwkhtmltox.dll");
@@ -225,5 +227,14 @@ app.UseMiddleware<LogsMiddleware>();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
+
+// 🔹 Automatically apply migrations on startup (only for dev)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    // Run migrations instead of Create/Ensure logic
+    db.Database.Migrate();
+}
 
 app.Run();

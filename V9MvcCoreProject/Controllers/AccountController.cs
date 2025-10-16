@@ -105,7 +105,7 @@ public class AccountController : Controller
             }
             else
             {
-                userLoginLog.UserId = "Unknown";
+                userLoginLog.UserId = 0;
                 userLoginLog.LoginTime = DateTime.Now;
                 userLoginLog.UserName = user.CNIC;
                 userLoginLog.LoginStatus = false;

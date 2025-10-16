@@ -6,7 +6,7 @@ public class UserLoginResponseViewModel
     public bool IsUserExists { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
-    public string UserId { get; set; }
+    public int UserId { get; set; }
     public string UserRole { get; set; }
     public string Error { get; set; }
     public int RoleTemplateId { get; set; }

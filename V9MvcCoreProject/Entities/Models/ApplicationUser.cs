@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace V9MvcCoreProject.Entities.Models;
 
-public class ApplicationUser : IdentityUser<string>
+public class ApplicationUser : IdentityUser<int>
 {
-    public ApplicationUser()
-    {
-        // Generate GUID when user is created
-        Id = Guid.NewGuid().ToString();
-    }
+    //public ApplicationUser()
+    //{
+    //    // Generate GUID when user is created
+    //    Id = Guid.NewGuid().ToString();
+    //}
 
     [Required]
     [StringLength(20)]
@@ -37,16 +37,26 @@ public class ApplicationUser : IdentityUser<string>
     public virtual ICollection<Employee> Employees { get; private set; } = new List<Employee>();
 }
 
-public class ApplicationRole : IdentityRole<string>
+public class ApplicationRole : IdentityRole<int>
 {
-    public ApplicationRole()
-    {
-        Id = Guid.NewGuid().ToString();
-    }
+    public ApplicationRole() : base() { }
 
     public ApplicationRole(string roleName) : base(roleName)
     {
-        Id = Guid.NewGuid().ToString();
         ConcurrencyStamp = Guid.NewGuid().ToString();
     }
 }
+
+//public class ApplicationRole : IdentityRole<string>
+//{
+//    public ApplicationRole()
+//    {
+//        Id = Guid.NewGuid().ToString();
+//    }
+
+//    public ApplicationRole(string roleName) : base(roleName)
+//    {
+//        Id = Guid.NewGuid().ToString();
+//        ConcurrencyStamp = Guid.NewGuid().ToString();
+//    }
+//}

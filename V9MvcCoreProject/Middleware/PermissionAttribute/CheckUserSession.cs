@@ -5,13 +5,6 @@ namespace V9MvcCoreProject.Middleware.PermissionAttribute;
 
 public sealed class CheckUserSession : ActionFilterAttribute
 {
-    private readonly ILogger<CheckUserSession> _logger;
-
-    public CheckUserSession(ILogger<CheckUserSession> logger)
-    {
-        _logger = logger;
-    }
-
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         var httpContext = context.HttpContext;
@@ -39,8 +32,7 @@ public sealed class CheckUserSession : ActionFilterAttribute
         bool isAjaxRequest = httpContext.Request.Headers.TryGetValue("X-Requested-With", out var header) &&
                              string.Equals(header, "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
 
-        _logger.LogWarning("Session expired or invalid. Path={Path}, IsAjax={IsAjax}",
-            httpContext.Request.Path, isAjaxRequest);
+        //_logger.LogWarning("Session expired or invalid. Path={Path}, IsAjax={IsAjax}", httpContext.Request.Path, isAjaxRequest);
 
         context.Result = isAjaxRequest
             ? new UnauthorizedResult()

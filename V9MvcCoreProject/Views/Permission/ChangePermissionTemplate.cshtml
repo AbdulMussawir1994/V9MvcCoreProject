@@ -1,0 +1,167 @@
+﻿@model V9MvcCoreProject.Entities.ViewModels.PermissionTemplateViewModel
+@{
+    ViewData["Title"] = "Change Permission Template";
+}
+
+<style>
+    table#PermissionGrid tr th {
+        background: #444;
+        color: #fff;
+    }
+
+    tbody#tbodyid tr td:first-child {
+        color: #444;
+        font-weight: 600;
+        line-height: 3;
+    }
+</style>
+
+
+
+<div class="col-sm-12 px-0">
+    <!--begin::Portlet-->
+    <div class="kt-portlet">
+        <div class="alert alert-danger mb-0" role="alert" id="errordiv" style="display:none;">
+            <div class="alert-text" id="errordivtext"></div>
+        </div>
+
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                    Change Role
+                </h3>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <div class="kt-portlet__body">
+            <form class="kt-form" id="PermissionTemplate">
+                <div class="form-group form-group-last cst-lbl px-0">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <label for="Templates">Roles</label>
+                                @Html.DropDownList("Templates", (IEnumerable<SelectListItem>)ViewBag.Templates, "Please select Role", new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <button type="button" class="btn btn-primary" id="BtnSave" onclick="ShowPermissionTemplate()">Show Role Permissions</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                
+                    @if (Model != null)
+                    {
+                        <div class="form-group form-group-last cst-lbl px-0">
+                            <div class="form-group mb-0 mt-5">
+                                <div class="row">
+                                    @Html.HiddenFor(model => model.Id)
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                        <label for="Select_Schedule_Date">Role Name</label>
+                                        @Html.TextBoxFor(model => model.TemplateName, null, new { placeholder = "Please Enter Role Name ", @class = "form-control" })
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                        <div class="csp-cst-lbl-x">
+                                            <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand mb-0">
+                                                @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control" })
+                                                <span></span>Active
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                    @{
+                                            //@if(ViewBag.ChangePermissionTemplate == "Allow")
+                                        //{
+                                        if (!Model.ReadOnly)
+                                        {
+                                            <button type="button" class="btn btn-primary" id="BtnSave" onclick="ConfirmUpdatePermissionTemplate()">Update Role</button>
+                                            }
+                                            //}
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @{
+                                            if (Model.ReadOnly)
+                                            {
+                                                <div class="alert alert-danger mt-4 mb-0" role="alert" id="errordiv" style="width:100%">
+                                                    <div class="alert-text" id="errordivtext"> This template is under review and cannot be changed </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-last px-0">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div id="dvGrid" class="px-0" style="width:100%">
+                                            <table class="table table-striped" id="PermissionGrid" width="100%">
+
+                                                <thead>
+                                                    @{
+                                                        var FunctionCount = Model.permissionTemplates.GroupBy(x => x.FormDisplayName).Select(t => new { count = t.Count() });
+                                                        <tr>
+                                                            <th align="left">Modules</th>
+                                                            <th align="left" colspan="@FunctionCount.Max(row => row.count)">Functionality</th>
+                                                        </tr>
+                                                    }
+                                                </thead>
+                                                <tbody id="tbodyid">
+                                                    @{
+                                                        var modules = Model.permissionTemplates.GroupBy(x => new { x.FormDisplayName, x.FormName }).OrderByDescending(x => x.Count());
+                                                        @foreach (var module in modules)
+                                                        {
+                                                            <tr>
+                                                                <td style='border: 1px solid #C0C0C0 !important;'>
+                                                                    @module.Key.FormDisplayName
+                                                                    <input type="text" id="@module.Key.FormName" value="@module.Key.FormName" hidden />
+                                                                </td>
+                                                                @foreach (var item in module)
+                                                                {
+                                                                    <td style='border: 1px solid #C0C0C0 !important;'>
+                                                                        <div class="kt-checkbox-inline">
+                                                                            <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand mb-0">
+                                                                                <input type="checkbox" id="@item.FunctionalityName" name="@item.FunctionalityName" value="@item.FunctionalityId" checked="@item.IsAllow">
+                                                                                <span></span>@item.FunctionalityName
+                                                                            </label>
+                                                                        </div>
+                                                                    </td>
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                
+            </form>
+        </div>
+        <!--end::Form-->
+
+    </div>
+    <!--end::Portlet-->
+
+</div>
+<!--end::Form-->    
+
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/ChangePermissionTemplate.js")"></script>
+}

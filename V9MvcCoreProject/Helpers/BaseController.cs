@@ -13,18 +13,30 @@ public class BaseController : Controller
     {
         _ActivityLog = ActivityLog;
     }
-    public async Task<int> GetLogedInUserId()
+
+    public int GetLoggedInUserId()
     {
-        int userId = 0;
-        var user = HttpContext.User.Claims
-            .Where(x => x.Type == "UserId")
-            .FirstOrDefault();
+        var principal = HttpContext?.User;
 
-        if (user != null)
-            userId = Convert.ToInt32(user.Value);
+        if (principal?.Identity?.IsAuthenticated != true)
+            return 0;
 
-        return userId;
+        return int.TryParse(principal.FindFirst("UserId")?.Value, out var userId)
+            ? userId
+            : 0;
     }
+
+    //public string? GetLoggedInUserId()
+    //{
+    //    var principal = HttpContext?.User;
+
+    //    if (principal?.Identity?.IsAuthenticated != true)
+    //        return null;
+
+    //    // Single-pass search, no LINQ allocations
+    //    return principal.FindFirst("UserId")?.Value;
+    //}
+
 
     //public bool ReadOnlyMode(SetUpForm setUpForm, MakerAction action, int referenceId)
     //{
@@ -68,7 +80,7 @@ public class BaseController : Controller
         history.NewValueJson = NewValue != null ? JsonSerializer.Serialize(NewValue) : "";
         history.Action = Action;
         history.ActionMethod = caller;
-        history.UserId = await GetLogedInUserId();
+        history.UserId = this.GetLoggedInUserId();
         history.LogId = HttpContext.Session.GetString("logId");
         status = await _ActivityLog.SaveActivityLogs(history);
         return status;

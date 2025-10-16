@@ -6,7 +6,7 @@ using V9MvcCoreProject.Entities.Models;
 
 namespace V9MvcCoreProject.DataDbContext;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
 {
     private readonly bool _isDesignTime;
 

@@ -1,0 +1,118 @@
+﻿@model V9MvcCoreProject.Entities.ViewModels.PermissionTemplateViewModel
+@{
+    ViewData["Title"] = "Create Permission Template";
+}
+
+<style>
+    table#PermissionGrid tr th {
+        background: #444;
+        color: #fff;
+    }
+
+    tbody#tbodyid tr td:first-child {
+        color: #444;
+        font-weight: 600;
+        line-height: 3;
+    }
+</style>
+
+
+<div class="col-sm-12 px-0">
+    <!--begin::Portlet-->
+    <div class="kt-portlet">
+        <div class="alert alert-danger mb-0" role="alert" id="errordiv" style="display:none;">
+            <div class="alert-text" id="errordivtext"></div>
+        </div>
+
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                    Create Role
+                </h3>
+            </div>
+        </div>
+        <!--begin::Form-->
+        <div class="kt-portlet__body">
+            <form class="kt-form" id="PermissionTemplate">
+                <div class="form-group form-group-last cst-lbl px-0">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <label for="TemplateName">Role Name</label>
+                                @*<input class="form-control" id="TemplateName" name="TemplateName" placeholder="Please Enter Role Name" />
+                            *@                            
+                             @Html.EditorFor(model => model.TemplateName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Please Enter Role Name", @maxlength = "50" } })
+                             @Html.ValidationMessageFor(model => model.TemplateName, "", new { @class = "text-danger" })
+                                                          
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 kt-checkbox-inline cst-lbl-x">
+                                <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand mb-0">
+                                    <input type="checkbox" id="IsActive" name="IsActive" checked>
+                                    <span></span>Active
+                                </label>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                <button type="button" class="btn btn-primary" id="BtnSave" onclick="ConfirmSavePermissionTemplate()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="form-group row">
+                <div id="dvGrid" style="width:100%">
+                    <table class="table table-striped" id="PermissionGrid" width="100%">
+                        <thead>
+                            @{
+                                var FunctionCount = Model.permissionTemplates.GroupBy(x => x.FormDisplayName).Select(t => new { count = t.Count() });
+                                <tr>
+                                    <th align="left">Modules</th>
+                                    <th align="left" colspan="@FunctionCount.Max(row => row.count)">Functionality</th>
+                                </tr>
+                            }
+                        </thead>
+                        <tbody id="tbodyid">
+                            @{
+                                var modules = Model.permissionTemplates.GroupBy(x => new { x.FormDisplayName, x.FormName }).OrderByDescending(x => x.Count());
+                                @foreach (var module in modules)
+                                {
+                                    <tr>
+                                        <td style='border: 1px solid #C0C0C0 !important;'>
+                                            @module.Key.FormDisplayName
+                                            <input type="text" id="@module.Key.FormName" value="@module.Key.FormName" hidden />
+                                        </td>
+                                        @foreach (var item in module)
+                                        {
+                                            <td style='border: 1px solid #C0C0C0 !important;'>
+                                                <div class="kt-checkbox-inline">
+                                                    <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand mb-0">
+                                                        <input type="checkbox" id="@item.FunctionalityName" name="@item.FunctionalityName" value="@item.FunctionalityId" checked="@item.IsAllow">
+                                                        <span></span>@item.FunctionalityName
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!--end::Form-->
+
+    </div>
+    <!--end::Portlet-->
+    <!--end::Portlet-->
+
+</div>
+
+@section scripts
+{
+    <script src="@Url.Content("~/ViewsScripts/PermissionTemp.js")"></script>
+}
+

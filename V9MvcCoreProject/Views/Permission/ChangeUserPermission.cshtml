@@ -1,0 +1,102 @@
+﻿@using Newtonsoft.Json;
+@{
+
+}
+
+
+
+<div class="row" id="">
+    <div class="col-md-4">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Select User and Page
+                    </h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form class="kt-form">
+                <div class="kt-portlet__body">
+
+                    <div class="alert alert-dismissible alert-danger mt-2" id="error" style="display:none">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span id="errortext"></span>
+                    </div>
+
+                    <div class="form-group form-group-last">
+                        <div class="form-group">
+                            <label for="Select_Report">Select User</label>
+                            @Html.DropDownList("users", (IEnumerable<SelectListItem>)ViewBag.allusers, "Please select user", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Select_Report">Select Page</label>
+                            @Html.DropDownList("forms", (IEnumerable<SelectListItem>)ViewBag.allforms, "Please select page", new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="kt-portlet__foot">
+                    <div class="kt-form__actions">
+                        <button type="button" class="btn btn-primary" id="btnDone" onclick="ShowFunctionalities()">Show Permissions</button>
+                    </div>                   
+                </div>
+
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+
+    </div>
+    <div class="col-md-8" id="functionalitiesDiv" style="visibility: hidden">
+        <!--begin::Portlet-->
+        <div class="kt-portlet">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    @*<label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand">
+                            <input class="check-box" id="fullaccess" type="checkbox" value="true">
+                            Full Access
+                            <span></span>
+                        </label>*@
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form class="kt-form">
+                <div class="kt-portlet__body">
+                    <div class="form-group form-group-last">
+
+                        <div class="form-group">
+                            <label><b>Functionalities</b></label>
+                            <div class="kt-checkbox-inline" id="chkdiv">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="kt-portlet__foot">
+                    <div class="kt-form__actions">
+                        <button type="button" class="btn btn-primary" id="AddNew" onclick="ConfirmChangePermission()">Change</button>
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="@Url.Content("~/Scripts/ChangeUserPermission.js")"></script>
+}
+

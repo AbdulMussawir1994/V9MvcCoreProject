@@ -78,8 +78,8 @@ public class LogsMiddleware
             Datetime = DateTime.UtcNow,
             Controller = controller,
             IsAjaxRequest = isAjax,
-            IsException = resBody.Contains("Exception") || reqBody.Contains("Exception"),
-            Exception = resBody.Contains("Exception") ? resBody : string.Empty
+            IsException = (reqBody?.Contains("exception", StringComparison.OrdinalIgnoreCase) ?? false) || (resBody?.Contains("exception", StringComparison.OrdinalIgnoreCase) ?? false),
+            Exception = (reqBody?.Contains("exception", StringComparison.OrdinalIgnoreCase) == true) ? reqBody : (resBody?.Contains("exception", StringComparison.OrdinalIgnoreCase) == true) ? resBody : string.Empty
         };
 
         _ = Task.Run(async () =>

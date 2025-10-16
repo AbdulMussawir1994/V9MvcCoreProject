@@ -12,3 +12,11 @@ public class WebResponse<T> //where T : class (When you use Generic type respons
     public static WebResponse<T> Failed(string message = "Error", bool isSuccess = false)
         => new WebResponse<T> { Message = message, IsSuccess = isSuccess };
 }
+
+
+public class GenericServiceResponse<T>
+{
+    public bool IsSuccess { get; set; }
+    public string Message { get; set; }
+    public T Data { get; set; }
+}
