@@ -26,4 +26,7 @@ public class RegisterViewModel
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Password do not match")]
     public string ConfirmPassword { get; set; }
+
+    [Required]
+    public int TemplateId { get; set; }
 }

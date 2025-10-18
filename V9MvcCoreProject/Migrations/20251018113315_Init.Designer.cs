@@ -12,7 +12,7 @@ using V9MvcCoreProject.DataDbContext;
 namespace V9MvcCoreProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251016051633_Init")]
+    [Migration("20251018113315_Init")]
     partial class Init
     {
         /// <inheritdoc />

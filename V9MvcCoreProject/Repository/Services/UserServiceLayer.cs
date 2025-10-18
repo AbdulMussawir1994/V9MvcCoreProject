@@ -88,7 +88,7 @@ public class UserServiceLayer : IUserServiceLayer
             IsActive = true,
             DateCreated = DateTime.UtcNow,
             LockoutEnabled = true,
-            RoleTemplateId = 1 // Default role template
+            RoleTemplateId = model.TemplateId
         };
 
         // ✅ Create and assign role

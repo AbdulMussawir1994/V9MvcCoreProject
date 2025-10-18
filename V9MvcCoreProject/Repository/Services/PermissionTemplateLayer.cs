@@ -96,5 +96,20 @@ namespace V9MvcCoreProject.Repository.Services
                 return WebResponse<ActionResponseDto>.Failed(ex.InnerException?.Message ?? ex.Message);
             }
         }
+        public async Task<WebResponse<List<PermissionTemplateDto>>> GetPermissionTemplatesAsync()
+        {
+            var templates = await _context.PermissionTemplate
+                .AsNoTracking()  // ✅ better performance (read-only query)
+                .Where(pt => pt.IsActive)
+                .OrderBy(pt => pt.TemplateName)
+                .Select(pt => new PermissionTemplateDto
+                {
+                    Id = pt.Id,
+                    TemplateName = pt.TemplateName
+                })
+                .ToListAsync();
+
+            return WebResponse<List<PermissionTemplateDto>>.Success(templates);
+        }
     }
 }

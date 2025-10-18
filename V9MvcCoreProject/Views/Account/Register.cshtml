@@ -138,6 +138,37 @@
                     text-decoration: underline;
                 }
 
+        /* Apply to your select dropdown */
+        #templateId {
+            font-family: 'Calisto MT';
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
+            font-size: 15px;
+            color: #848383;
+            transition: all 0.3s ease;
+            appearance: none; /* Remove default browser arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 20,0 10,10"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 12px;
+        }
+
+            /* Hover & focus effects */
+            #templateId:hover {
+                border-color: #007bff;
+            }
+
+            #templateId:focus {
+                outline: none;
+                border-color: #007bff;
+                box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+            }
+
         /* ---------- Bubble Animation ---------- */
         .colorlib-bubbles {
             position: absolute;
@@ -320,6 +351,13 @@
                     <div class="form-group">
                         <input type="password" name="confirmpassword" placeholder="Enter Confirm Password" class="form-control" />
                         <p class="form-error" id="confirmpassword-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <select id="templateId" name="templateId" class="form-control">
+                            <option value="">Select Template Name</option>
+                        </select>
+                        <p class="form-error" id="templateId-error"></p>
                     </div>
 
                     <button id="fontStyle" type="button" class="btn-login" onclick="Register()">Submit</button>

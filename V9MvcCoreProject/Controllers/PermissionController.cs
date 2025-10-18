@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using V9MvcCoreProject.Entities.ViewModels;
 using V9MvcCoreProject.Extensions.LogsHelpers.Interface;
 using V9MvcCoreProject.Helpers;
@@ -52,5 +53,13 @@ public class PermissionController : BaseController
     {
         bool IsExists = Task.Run(async () => await _permission.TemplateNameExistsAsync(TemplateName)).Result;
         return Json(!IsExists ? "true" : string.Format("{0} already exists.", TemplateName));
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<JsonResult> GetPermissionTemplates()
+    {
+        var response = await _permission.GetPermissionTemplatesAsync();
+        return Json(response.Value);
     }
 }

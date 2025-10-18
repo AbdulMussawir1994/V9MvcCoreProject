@@ -1,6 +1,8 @@
 ﻿
     $(document).ready(function () {
 
+        loadPermissionTemplates();
+
         // 🔹 Format CNIC while typing (e.g., 42101-1234567-9)
         $("input[name='cnic']").on("input", function () {
             let raw = $(this).val().replace(/\D/g, ""); // remove non-digits
@@ -42,9 +44,41 @@ function hideSpinner() {
 }
 
 
+function loadPermissionTemplates() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Permission/GetPermissionTemplates",
+        dataType: "json",
+        success: function (response) {
+            debugger
+            console.log("Templates loaded:", response);
+            const $dropdown = $("#templateId");
+            $dropdown.empty().append('<option value="">Select Template Name</option>');
+
+            if (response && response.length > 0) {
+                $.each(response, function (i, item) {
+                    $dropdown.append(
+                        $("<option></option>")
+                            .val(item.Id)
+                            .text(item.TemplateName)
+                    );
+                });
+            } else {
+                $dropdown.append('<option value="">No templates available</option>');
+            }
+        },
+        error: function (xhr) {
+            console.error("Error loading templates:", xhr.responseText);
+            alert("Failed to load permission templates.");
+        }
+    });
+}
+
+
 // 🔹 On Submit
 function Register() {
-
+    debugger
     showSpinner();
 
     let data = {
@@ -52,7 +86,8 @@ function Register() {
         Username: $("input[name='username']").val().trim(),
         Email: $("input[name='email']").val().trim(),
         Password: $("input[name='password']").val().trim(),
-        ConfirmPassword: $("input[name='confirmpassword']").val().trim()
+        ConfirmPassword: $("input[name='confirmpassword']").val().trim(),
+        TemplateId: $("select[name='templateId']").val().trim()
     };
 
     let hasError = false;
@@ -101,6 +136,12 @@ function Register() {
         hasError = true;
     } else if (data.Password !== data.ConfirmPassword) {
         $("#confirmpassword-error").text("Passwords do not match.");
+        hideSpinner();
+        hasError = true;
+    }
+
+    if (!data.TemplateId) {
+        $("#templateId-error").text("Please select template name.");
         hideSpinner();
         hasError = true;
     }
