@@ -292,6 +292,48 @@ namespace V9MvcCoreProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationFunctionalities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ActionMethodName = "Index",
+                            FormId = 1,
+                            FunctionalityName = "Index",
+                            IsActive = true,
+                            IsMenuItem = true,
+                            MenuReferenceName = "Home"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActionMethodName = "Privacy",
+                            FormId = 1,
+                            FunctionalityName = "Privacy",
+                            IsActive = true,
+                            IsMenuItem = true,
+                            MenuReferenceName = "Home"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ActionMethodName = "PermissionTemplate",
+                            FormId = 2,
+                            FunctionalityName = "Add Role",
+                            IsActive = true,
+                            IsMenuItem = true,
+                            MenuReferenceName = "User Permission"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ActionMethodName = "ChangePermissionTemplate",
+                            FormId = 2,
+                            FunctionalityName = "Change Role",
+                            IsActive = true,
+                            IsMenuItem = true,
+                            MenuReferenceName = "User Permission"
+                        });
                 });
 
             modelBuilder.Entity("V9MvcCoreProject.Entities.Models.ApplicationRole", b =>
@@ -322,6 +364,15 @@ namespace V9MvcCoreProject.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "CONC-STATIC-001",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("V9MvcCoreProject.Entities.Models.ApplicationUser", b =>
@@ -442,6 +493,28 @@ namespace V9MvcCoreProject.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            CNIC = "4210148778829",
+                            ConcurrencyStamp = "CONC-STATIC-001",
+                            DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "abdul_mussawir@hotmail.com",
+                            EmailConfirmed = true,
+                            IsActive = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ABDUL_MUSSAWIR@HOTMAIL.com",
+                            NormalizedUserName = "ABDULMUSSAWIR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJiu2wVj63Exf0DOkJO1Fk4ULry9lq8UMjyGr3qOvMF9aG2jliBjXEeXP2D/ICHGgQ==",
+                            PhoneNumberConfirmed = false,
+                            RoleTemplateId = 1,
+                            SecurityStamp = "SEC-STATIC-001",
+                            TwoFactorEnabled = false,
+                            UserName = "abdulmussawir"
+                        });
                 });
 
             modelBuilder.Entity("V9MvcCoreProject.Entities.Models.Employee", b =>
@@ -520,6 +593,28 @@ namespace V9MvcCoreProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FormDetail");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ActionName = "ViewsHome",
+                            ControllerName = "Home",
+                            DisplayName = "Home",
+                            DisplayOrder = 1,
+                            FormName = "ViewsHome",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActionName = "Index",
+                            ControllerName = "Permission",
+                            DisplayName = "User Permission",
+                            DisplayOrder = 2,
+                            FormName = "Permission",
+                            IsActive = true
+                        });
                 });
 
             modelBuilder.Entity("V9MvcCoreProject.Entities.Models.ListItems", b =>
@@ -593,6 +688,16 @@ namespace V9MvcCoreProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PermissionTemplate");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = 1,
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            TemplateName = "Super Admin"
+                        });
                 });
 
             modelBuilder.Entity("V9MvcCoreProject.Entities.Models.PermissionTemplateDetail", b =>
@@ -623,6 +728,40 @@ namespace V9MvcCoreProject.Migrations
                     b.HasIndex("TemplateId");
 
                     b.ToTable("PermissionTemplateDetail");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FormName = "ViewsHome",
+                            FunctionalityId = 1,
+                            IsAllow = true,
+                            TemplateId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FormName = "ViewsHome",
+                            FunctionalityId = 2,
+                            IsAllow = true,
+                            TemplateId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FormName = "Permission",
+                            FunctionalityId = 3,
+                            IsAllow = true,
+                            TemplateId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            FormName = "Permission",
+                            FunctionalityId = 4,
+                            IsAllow = true,
+                            TemplateId = 1
+                        });
                 });
 
             modelBuilder.Entity("V9MvcCoreProject.Entities.Models.UserAccess", b =>

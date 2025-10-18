@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace V9MvcCoreProject.Migrations
 {
     /// <inheritdoc />
@@ -397,6 +399,52 @@ namespace V9MvcCoreProject.Migrations
                         column: x => x.TemplateId,
                         principalTable: "PermissionTemplate",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "ApplicationFunctionalities",
+                columns: new[] { "Id", "ActionMethodName", "FormId", "FunctionalityName", "IsActive", "IsMenuItem", "MenuReferenceName" },
+                values: new object[,]
+                {
+                    { 1, "Index", 1, "Index", true, true, "Home" },
+                    { 2, "Privacy", 1, "Privacy", true, true, "Home" },
+                    { 3, "PermissionTemplate", 2, "Add Role", true, true, "User Permission" },
+                    { 4, "ChangePermissionTemplate", 2, "Change Role", true, true, "User Permission" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { 1, "CONC-STATIC-001", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "CNIC", "City", "ConcurrencyStamp", "CreatedBy", "DateCreated", "Email", "EmailConfirmed", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImageUrl", "RoleTemplateId", "SecurityStamp", "State", "TwoFactorEnabled", "UpdatedBy", "UserName" },
+                values: new object[] { 1, 0, "4210148778829", null, "CONC-STATIC-001", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEJiu2wVj63Exf0DOkJO1Fk4ULry9lq8UMjyGr3qOvMF9aG2jliBjXEeXP2D/ICHGgQ==", null, false, null, 1, "SEC-STATIC-001", null, false, null, "abdulmussawir" });
+
+            migrationBuilder.InsertData(
+                table: "FormDetail",
+                columns: new[] { "Id", "ActionName", "ControllerName", "DisplayName", "DisplayOrder", "FormName", "IconCode", "IsActive" },
+                values: new object[,]
+                {
+                    { 1, "ViewsHome", "Home", "Home", 1, "ViewsHome", null, true },
+                    { 2, "Index", "Permission", "User Permission", 2, "Permission", null, true }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PermissionTemplate",
+                columns: new[] { "Id", "CreatedBy", "CreatedDate", "IsActive", "TemplateName", "UpdatedBy", "UpdatedDate" },
+                values: new object[] { 1, 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Super Admin", null, null });
+
+            migrationBuilder.InsertData(
+                table: "PermissionTemplateDetail",
+                columns: new[] { "Id", "FormName", "FunctionalityId", "IsAllow", "TemplateId" },
+                values: new object[,]
+                {
+                    { 1, "ViewsHome", 1, true, 1 },
+                    { 2, "ViewsHome", 2, true, 1 },
+                    { 3, "Permission", 3, true, 1 },
+                    { 4, "Permission", 4, true, 1 }
                 });
 
             migrationBuilder.CreateIndex(

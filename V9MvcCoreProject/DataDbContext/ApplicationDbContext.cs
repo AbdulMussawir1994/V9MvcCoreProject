@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -309,5 +310,76 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
                 .IsUnicode(false);
         });
 
+
+        //Auto Migration Seed Data
+
+        var fixedDate = new DateTime(2025, 01, 01);
+        var fixedSecurityStamp = "SEC-STATIC-001";
+        var fixedConcurrencyStamp = "CONC-STATIC-001";
+
+        //Seed for UserRole
+        builder.Entity<ApplicationRole>().HasData(
+            new ApplicationRole
+            {
+                Id = 1,
+                Name = "Admin",
+                NormalizedName = "ADMIN",
+                ConcurrencyStamp = fixedConcurrencyStamp
+            }
+        );
+
+        //Seed for ApplicationUser
+        var hasher = new PasswordHasher<ApplicationUser>();
+        builder.Entity<ApplicationUser>().HasData(
+            new ApplicationUser
+            {
+                Id = 1,
+                UserName = "abdulmussawir",
+                CNIC = "4210148778829",
+                NormalizedUserName = "ABDULMUSSAWIR",
+                Email = "abdul_mussawir@hotmail.com",
+                NormalizedEmail = "ABDUL_MUSSAWIR@HOTMAIL.com",
+                EmailConfirmed = true,
+                SecurityStamp = fixedSecurityStamp,
+                ConcurrencyStamp = fixedConcurrencyStamp,
+                RoleTemplateId = 1,
+                PasswordHash = hasher.HashPassword(null, "123456"),
+                DateCreated = fixedDate
+            }
+        );
+
+        // Seed FormDetail
+        builder.Entity<FormDetail>().HasData(
+            new FormDetail { Id = 1, ControllerName = "Home", ActionName = "ViewsHome", FormName = "ViewsHome", IsActive = true, DisplayName = "Home", IconCode = null, DisplayOrder = 1 },
+            new FormDetail { Id = 2, ControllerName = "Permission", ActionName = "Index", FormName = "Permission", IsActive = true, DisplayName = "User Permission", IconCode = null, DisplayOrder = 2 }
+        );
+
+        // Seed ApplicationFunctionality
+        builder.Entity<ApplicationFunctionalities>().HasData(
+            new ApplicationFunctionalities { Id = 1, FunctionalityName = "Index", FormId = 1, IsActive = true, ActionMethodName = "Index", IsMenuItem = true, MenuReferenceName = "Home" },
+            new ApplicationFunctionalities { Id = 2, FunctionalityName = "Privacy", FormId = 1, IsActive = true, ActionMethodName = "Privacy", IsMenuItem = true, MenuReferenceName = "Home" },
+            new ApplicationFunctionalities { Id = 3, FunctionalityName = "Add Role", FormId = 2, IsActive = true, ActionMethodName = "PermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" },
+            new ApplicationFunctionalities { Id = 4, FunctionalityName = "Change Role", FormId = 2, IsActive = true, ActionMethodName = "ChangePermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" }
+        );
+
+        // Seed PermissionTemplate
+        builder.Entity<PermissionTemplate>().HasData(
+           new PermissionTemplate
+           {
+               Id = 1,
+               TemplateName = "Super Admin",
+               IsActive = true,
+               CreatedBy = 1,
+               CreatedDate = fixedDate
+           }
+       );
+
+        // Seed PermissionTemplateDetail
+        builder.Entity<PermissionTemplateDetail>().HasData(
+            new PermissionTemplateDetail { Id = 1, TemplateId = 1, FormName = "ViewsHome", FunctionalityId = 1, IsAllow = true },
+            new PermissionTemplateDetail { Id = 2, TemplateId = 1, FormName = "ViewsHome", FunctionalityId = 2, IsAllow = true },
+            new PermissionTemplateDetail { Id = 3, TemplateId = 1, FormName = "Permission", FunctionalityId = 3, IsAllow = true },
+            new PermissionTemplateDetail { Id = 4, TemplateId = 1, FormName = "Permission", FunctionalityId = 4, IsAllow = true }
+        );
     }
 }
