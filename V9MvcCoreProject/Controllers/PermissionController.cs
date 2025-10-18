@@ -47,4 +47,10 @@ public class PermissionController : BaseController
 
         return Json(new { success = result.IsSuccess, message = result.Message ?? "Saved successfully." });
     }
+
+    public JsonResult ValidateTemplateName(string TemplateName)
+    {
+        bool IsExists = Task.Run(async () => await _permission.TemplateNameExistsAsync(TemplateName)).Result;
+        return Json(!IsExists ? "true" : string.Format("{0} already exists.", TemplateName));
+    }
 }

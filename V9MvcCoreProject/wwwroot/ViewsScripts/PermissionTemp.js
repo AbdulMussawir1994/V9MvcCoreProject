@@ -1,5 +1,5 @@
 ﻿jQuery(document).ready(function () {
-    alert("Test")
+  //  alert("Test")
 });
 
 
@@ -32,7 +32,6 @@ function ConfirmSavePermissionTemplate() {
     })
 }
 function SavePermissionTemplate() {
-    debugger
     RemoveError();
     var TemplateName = $('#TemplateName').val();
     var IsActive = document.getElementById('IsActive').checked;
@@ -64,17 +63,19 @@ function SavePermissionTemplate() {
         PermissionTemplateDTO.TemplateName = TemplateName;
         PermissionTemplateDTO.IsActive = IsActive;
         PermissionTemplateDTO.permissionTemplates = checkedList;
-        debugger
+
         $.ajax({
             type: "POST",
             url: "/Permission/SavePermissionTemplate",
             data: PermissionTemplateDTO,
             success: function (response) {
+                debugger
+                console.log("PermTem", response);
 
                 if (response.success) {
                     swal.fire({
                         title: 'Success',
-                        text: 'Request has been created successfully',
+                        text: 'User has been created successfully',
                         type: "success",
                         buttonsStyling: false,
                         allowOutsideClick: false,
@@ -93,7 +94,7 @@ function SavePermissionTemplate() {
                 else {
                     swal.fire({
                         title: 'Error',
-                        text: response.Message,
+                        text: response.message,
                         type: "error"
                     });
                 }

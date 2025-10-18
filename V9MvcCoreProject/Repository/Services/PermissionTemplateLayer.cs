@@ -1,4 +1,5 @@
-﻿using V9MvcCoreProject.DataDbContext;
+﻿using Microsoft.EntityFrameworkCore;
+using V9MvcCoreProject.DataDbContext;
 using V9MvcCoreProject.Entities.DTOs;
 using V9MvcCoreProject.Entities.Models;
 using V9MvcCoreProject.Entities.ViewModels;
@@ -37,8 +38,20 @@ namespace V9MvcCoreProject.Repository.Services
             return response;
         }
 
+        public async Task<bool> TemplateNameExistsAsync(string TemplateName)
+        {
+            return await _context.PermissionTemplate.AnyAsync(x => x.TemplateName == TemplateName);
+        }
+
         public async Task<WebResponse<ActionResponseDto>> SavePermissionTemplateAsync(PermissionTemplateViewModel model)
         {
+            var existUser = await _context.PermissionTemplate.Where(x => x.TemplateName == model.TemplateName).FirstOrDefaultAsync();
+
+            if (existUser is not null)
+            {
+                return WebResponse<ActionResponseDto>.Failed("Template Name already exists. Please use a different name.");
+            }
+
             await using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
