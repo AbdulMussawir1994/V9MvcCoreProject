@@ -406,10 +406,10 @@ namespace V9MvcCoreProject.Migrations
                 columns: new[] { "Id", "ActionMethodName", "FormId", "FunctionalityName", "IsActive", "IsMenuItem", "MenuReferenceName" },
                 values: new object[,]
                 {
-                    { 1, "Index", 1, "Index", true, true, "Home" },
-                    { 2, "Privacy", 1, "Privacy", true, true, "Home" },
-                    { 3, "PermissionTemplate", 2, "Add Role", true, true, "User Permission" },
-                    { 4, "ChangePermissionTemplate", 2, "Change Role", true, true, "User Permission" }
+                    { 1, "PermissionTemplate", 1, "Add Role", true, true, "User Permission" },
+                    { 2, "ChangePermissionTemplate", 1, "Change Role", true, true, "User Permission" },
+                    { 3, "Index", 2, "Index", true, true, "Home" },
+                    { 4, "Privacy", 2, "Privacy", true, true, "Home" }
                 });
 
             migrationBuilder.InsertData(
@@ -420,15 +420,15 @@ namespace V9MvcCoreProject.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "CNIC", "City", "ConcurrencyStamp", "CreatedBy", "DateCreated", "Email", "EmailConfirmed", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImageUrl", "RoleTemplateId", "SecurityStamp", "State", "TwoFactorEnabled", "UpdatedBy", "UserName" },
-                values: new object[] { 1, 0, "4210148778829", null, "CONC-STATIC-001", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEJiu2wVj63Exf0DOkJO1Fk4ULry9lq8UMjyGr3qOvMF9aG2jliBjXEeXP2D/ICHGgQ==", null, false, null, 1, "SEC-STATIC-001", null, false, null, "abdulmussawir" });
+                values: new object[] { 1, 0, "4210148778829", null, "CONC-STATIC-001", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEDN/RRsQwvn4ZWb/dI201CZbl7rgbfCY02kOuHqICxhOBNTyA8Ul8zL7RJmktCoSbw==", null, false, null, 1, "SEC-STATIC-001", null, false, null, "abdulmussawir" });
 
             migrationBuilder.InsertData(
                 table: "FormDetail",
                 columns: new[] { "Id", "ActionName", "ControllerName", "DisplayName", "DisplayOrder", "FormName", "IconCode", "IsActive" },
                 values: new object[,]
                 {
-                    { 1, "ViewsHome", "Home", "Home", 1, "ViewsHome", null, true },
-                    { 2, "Index", "Permission", "User Permission", 2, "Permission", null, true }
+                    { 1, "Index", "Permission", "User Permission", 1, "Permission", null, true },
+                    { 2, "ViewsHome", "Home", "Home", 2, "ViewsHome", null, true }
                 });
 
             migrationBuilder.InsertData(
@@ -441,10 +441,10 @@ namespace V9MvcCoreProject.Migrations
                 columns: new[] { "Id", "FormName", "FunctionalityId", "IsAllow", "TemplateId" },
                 values: new object[,]
                 {
-                    { 1, "ViewsHome", 1, true, 1 },
-                    { 2, "ViewsHome", 2, true, 1 },
-                    { 3, "Permission", 3, true, 1 },
-                    { 4, "Permission", 4, true, 1 }
+                    { 1, "Permission", 1, true, 1 },
+                    { 2, "Permission", 2, true, 1 },
+                    { 3, "ViewsHom", 3, true, 1 },
+                    { 4, "ViewsHom", 4, true, 1 }
                 });
 
             migrationBuilder.CreateIndex(

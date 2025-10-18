@@ -314,8 +314,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         //Auto Migration Seed Data
 
         var fixedDate = new DateTime(2025, 01, 01);
-        var fixedSecurityStamp = "SEC-STATIC-001";
-        var fixedConcurrencyStamp = "CONC-STATIC-001";
+        var fixedSecurityStamp = "IIDB6BYTZ3F7ASCXIME2AO6PMXQLXDU3";
+        var fixedConcurrencyStamp = "7270a0d8-ee2e-49af-b11d-2a78051b8753";
 
         //Seed for UserRole
         builder.Entity<ApplicationRole>().HasData(
@@ -350,16 +350,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
         // Seed FormDetail
         builder.Entity<FormDetail>().HasData(
-            new FormDetail { Id = 1, ControllerName = "Home", ActionName = "ViewsHome", FormName = "ViewsHome", IsActive = true, DisplayName = "Home", IconCode = null, DisplayOrder = 1 },
-            new FormDetail { Id = 2, ControllerName = "Permission", ActionName = "Index", FormName = "Permission", IsActive = true, DisplayName = "User Permission", IconCode = null, DisplayOrder = 2 }
+            new FormDetail { Id = 1, ControllerName = "Permission", ActionName = "Index", FormName = "Permission", IsActive = true, DisplayName = "User Permission", IconCode = null, DisplayOrder = 1 },
+            new FormDetail { Id = 2, ControllerName = "Home", ActionName = "ViewsHome", FormName = "ViewsHome", IsActive = true, DisplayName = "Home", IconCode = null, DisplayOrder = 2 }
         );
 
         // Seed ApplicationFunctionality
         builder.Entity<ApplicationFunctionalities>().HasData(
-            new ApplicationFunctionalities { Id = 1, FunctionalityName = "Index", FormId = 1, IsActive = true, ActionMethodName = "Index", IsMenuItem = true, MenuReferenceName = "Home" },
-            new ApplicationFunctionalities { Id = 2, FunctionalityName = "Privacy", FormId = 1, IsActive = true, ActionMethodName = "Privacy", IsMenuItem = true, MenuReferenceName = "Home" },
-            new ApplicationFunctionalities { Id = 3, FunctionalityName = "Add Role", FormId = 2, IsActive = true, ActionMethodName = "PermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" },
-            new ApplicationFunctionalities { Id = 4, FunctionalityName = "Change Role", FormId = 2, IsActive = true, ActionMethodName = "ChangePermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" }
+            new ApplicationFunctionalities { Id = 1, FunctionalityName = "Add Role", FormId = 1, IsActive = true, ActionMethodName = "PermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" },
+            new ApplicationFunctionalities { Id = 2, FunctionalityName = "Change Role", FormId = 1, IsActive = true, ActionMethodName = "ChangePermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" },
+            new ApplicationFunctionalities { Id = 3, FunctionalityName = "Index", FormId = 2, IsActive = true, ActionMethodName = "Index", IsMenuItem = true, MenuReferenceName = "Home" },
+            new ApplicationFunctionalities { Id = 4, FunctionalityName = "Privacy", FormId = 2, IsActive = true, ActionMethodName = "Privacy", IsMenuItem = true, MenuReferenceName = "Home" }
         );
 
         // Seed PermissionTemplate
@@ -376,10 +376,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
         // Seed PermissionTemplateDetail
         builder.Entity<PermissionTemplateDetail>().HasData(
-            new PermissionTemplateDetail { Id = 1, TemplateId = 1, FormName = "ViewsHome", FunctionalityId = 1, IsAllow = true },
-            new PermissionTemplateDetail { Id = 2, TemplateId = 1, FormName = "ViewsHome", FunctionalityId = 2, IsAllow = true },
-            new PermissionTemplateDetail { Id = 3, TemplateId = 1, FormName = "Permission", FunctionalityId = 3, IsAllow = true },
-            new PermissionTemplateDetail { Id = 4, TemplateId = 1, FormName = "Permission", FunctionalityId = 4, IsAllow = true }
+            new PermissionTemplateDetail { Id = 1, TemplateId = 1, FormName = "Permission", FunctionalityId = 1, IsAllow = true },
+            new PermissionTemplateDetail { Id = 2, TemplateId = 1, FormName = "Permission", FunctionalityId = 2, IsAllow = true },
+            new PermissionTemplateDetail { Id = 3, TemplateId = 1, FormName = "ViewsHom", FunctionalityId = 3, IsAllow = true },
+            new PermissionTemplateDetail { Id = 4, TemplateId = 1, FormName = "ViewsHom", FunctionalityId = 4, IsAllow = true }
         );
     }
 }

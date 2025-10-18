@@ -228,13 +228,52 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
-// 🔹 Automatically apply migrations on startup (only for dev)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    // Run migrations instead of Create/Ensure logic
-    db.Database.Migrate();
+    try
+    {
+        // Get pending migrations
+        var pendingMigrations = db.Database.GetPendingMigrations();
+
+        // ✅ Only migrate if there are pending migrations
+        if (pendingMigrations.Any())
+        {
+            Console.WriteLine("🔄 Applying pending migrations...");
+            db.Database.Migrate();
+            Console.WriteLine("✅ Database updated successfully.");
+        }
+        else
+        {
+            Console.WriteLine("✅ Database already up-to-date.");
+        }
+
+        // ✅ Runtime seed (only runs once)
+        if (!db.Users.Any(u => u.UserName == "abdulmussawir"))
+        {
+            var hasher = new PasswordHasher<ApplicationUser>();
+            var adminUser = new ApplicationUser
+            {
+                UserName = "abdulmussawir",
+                CNIC = "4210148778829",
+                Email = "abdulmussawir@hotmail.com",
+                RoleTemplateId = 1,
+                EmailConfirmed = true,
+                DateCreated = DateTime.UtcNow
+            };
+            adminUser.PasswordHash = hasher.HashPassword(adminUser, "123456");
+            db.Users.Add(adminUser);
+            db.SaveChanges();
+
+            Console.WriteLine("👤 Default admin user created.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Migration/Seeding failed: {ex.Message}");
+        // optional: log ex.InnerException?.Message for details
+    }
 }
 
 app.Run();

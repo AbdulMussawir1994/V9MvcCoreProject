@@ -297,28 +297,8 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 1,
-                            ActionMethodName = "Index",
-                            FormId = 1,
-                            FunctionalityName = "Index",
-                            IsActive = true,
-                            IsMenuItem = true,
-                            MenuReferenceName = "Home"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ActionMethodName = "Privacy",
-                            FormId = 1,
-                            FunctionalityName = "Privacy",
-                            IsActive = true,
-                            IsMenuItem = true,
-                            MenuReferenceName = "Home"
-                        },
-                        new
-                        {
-                            Id = 3,
                             ActionMethodName = "PermissionTemplate",
-                            FormId = 2,
+                            FormId = 1,
                             FunctionalityName = "Add Role",
                             IsActive = true,
                             IsMenuItem = true,
@@ -326,13 +306,33 @@ namespace V9MvcCoreProject.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 2,
                             ActionMethodName = "ChangePermissionTemplate",
-                            FormId = 2,
+                            FormId = 1,
                             FunctionalityName = "Change Role",
                             IsActive = true,
                             IsMenuItem = true,
                             MenuReferenceName = "User Permission"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ActionMethodName = "Index",
+                            FormId = 2,
+                            FunctionalityName = "Index",
+                            IsActive = true,
+                            IsMenuItem = true,
+                            MenuReferenceName = "Home"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ActionMethodName = "Privacy",
+                            FormId = 2,
+                            FunctionalityName = "Privacy",
+                            IsActive = true,
+                            IsMenuItem = true,
+                            MenuReferenceName = "Home"
                         });
                 });
 
@@ -508,7 +508,7 @@ namespace V9MvcCoreProject.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDUL_MUSSAWIR@HOTMAIL.com",
                             NormalizedUserName = "ABDULMUSSAWIR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJiu2wVj63Exf0DOkJO1Fk4ULry9lq8UMjyGr3qOvMF9aG2jliBjXEeXP2D/ICHGgQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDN/RRsQwvn4ZWb/dI201CZbl7rgbfCY02kOuHqICxhOBNTyA8Ul8zL7RJmktCoSbw==",
                             PhoneNumberConfirmed = false,
                             RoleTemplateId = 1,
                             SecurityStamp = "SEC-STATIC-001",
@@ -598,21 +598,21 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 1,
-                            ActionName = "ViewsHome",
-                            ControllerName = "Home",
-                            DisplayName = "Home",
+                            ActionName = "Index",
+                            ControllerName = "Permission",
+                            DisplayName = "User Permission",
                             DisplayOrder = 1,
-                            FormName = "ViewsHome",
+                            FormName = "Permission",
                             IsActive = true
                         },
                         new
                         {
                             Id = 2,
-                            ActionName = "Index",
-                            ControllerName = "Permission",
-                            DisplayName = "User Permission",
+                            ActionName = "ViewsHome",
+                            ControllerName = "Home",
+                            DisplayName = "Home",
                             DisplayOrder = 2,
-                            FormName = "Permission",
+                            FormName = "ViewsHome",
                             IsActive = true
                         });
                 });
@@ -733,7 +733,7 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 1,
-                            FormName = "ViewsHome",
+                            FormName = "Permission",
                             FunctionalityId = 1,
                             IsAllow = true,
                             TemplateId = 1
@@ -741,7 +741,7 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 2,
-                            FormName = "ViewsHome",
+                            FormName = "Permission",
                             FunctionalityId = 2,
                             IsAllow = true,
                             TemplateId = 1
@@ -749,7 +749,7 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 3,
-                            FormName = "Permission",
+                            FormName = "ViewsHom",
                             FunctionalityId = 3,
                             IsAllow = true,
                             TemplateId = 1
@@ -757,7 +757,7 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 4,
-                            FormName = "Permission",
+                            FormName = "ViewsHom",
                             FunctionalityId = 4,
                             IsAllow = true,
                             TemplateId = 1
