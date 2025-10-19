@@ -60,6 +60,7 @@ function Login() {
         url: "/Account/Login",
         data: data,
         success: function (response) {
+            debugger
             console.log(response)
             hideSpinner();
 

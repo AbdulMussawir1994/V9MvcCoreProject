@@ -406,6 +406,28 @@
                 color: #ccc;
             }
 
+
+        /* ===================== RESPONSIVE: between 769px and 1200px ===================== */
+        @@media (max-width: 1200px) and (min-width: 769px) {
+
+            .sidebar.open ~ .main .header,
+            .sidebar.open ~ .main #mainContent {
+                margin-left: 0 !important;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main {
+                margin-left: 0 !important;
+            }
+
+            .optional {
+                margin-left: 25% !important;
+            }
+        }
+
         /* ===================== RESPONSIVE ===================== */
         @@media (max-width: 768px) {
             .sidebar {
@@ -427,7 +449,7 @@
             }
 
             .optional {
-                margin-left: 60% !important;
+                margin-left: 50% !important;
             }
         }
     </style>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace V9MvcCoreProject.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitialSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -415,12 +415,12 @@ namespace V9MvcCoreProject.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "CONC-STATIC-001", "Admin", "ADMIN" });
+                values: new object[] { 1, "7270a0d8-ee2e-49af-b11d-2a78051b8753", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "CNIC", "City", "ConcurrencyStamp", "CreatedBy", "DateCreated", "Email", "EmailConfirmed", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImageUrl", "RoleTemplateId", "SecurityStamp", "State", "TwoFactorEnabled", "UpdatedBy", "UserName" },
-                values: new object[] { 1, 0, "4210148778829", null, "CONC-STATIC-001", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEDN/RRsQwvn4ZWb/dI201CZbl7rgbfCY02kOuHqICxhOBNTyA8Ul8zL7RJmktCoSbw==", null, false, null, 1, "SEC-STATIC-001", null, false, null, "abdulmussawir" });
+                values: new object[] { 1, 0, "4210148778829", null, "7270a0d8-ee2e-49af-b11d-2a78051b8753", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEPlyHEyByFzD3b2bD/RZt6YIbtMhjFcDtdFXGfuDk/UUiuedFk6hxE+AzC318EEiIA==", null, false, null, 1, "IIDB6BYTZ3F7ASCXIME2AO6PMXQLXDU3", null, false, null, "abdulmussawir" });
 
             migrationBuilder.InsertData(
                 table: "FormDetail",

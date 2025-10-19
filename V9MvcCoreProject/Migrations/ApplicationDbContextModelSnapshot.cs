@@ -369,7 +369,7 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "CONC-STATIC-001",
+                            ConcurrencyStamp = "7270a0d8-ee2e-49af-b11d-2a78051b8753",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -500,7 +500,7 @@ namespace V9MvcCoreProject.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             CNIC = "4210148778829",
-                            ConcurrencyStamp = "CONC-STATIC-001",
+                            ConcurrencyStamp = "7270a0d8-ee2e-49af-b11d-2a78051b8753",
                             DateCreated = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "abdul_mussawir@hotmail.com",
                             EmailConfirmed = true,
@@ -508,10 +508,10 @@ namespace V9MvcCoreProject.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDUL_MUSSAWIR@HOTMAIL.com",
                             NormalizedUserName = "ABDULMUSSAWIR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDN/RRsQwvn4ZWb/dI201CZbl7rgbfCY02kOuHqICxhOBNTyA8Ul8zL7RJmktCoSbw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPlyHEyByFzD3b2bD/RZt6YIbtMhjFcDtdFXGfuDk/UUiuedFk6hxE+AzC318EEiIA==",
                             PhoneNumberConfirmed = false,
                             RoleTemplateId = 1,
-                            SecurityStamp = "SEC-STATIC-001",
+                            SecurityStamp = "IIDB6BYTZ3F7ASCXIME2AO6PMXQLXDU3",
                             TwoFactorEnabled = false,
                             UserName = "abdulmussawir"
                         });

@@ -248,26 +248,6 @@ using (var scope = app.Services.CreateScope())
         {
             Console.WriteLine("✅ Database already up-to-date.");
         }
-
-        // ✅ Runtime seed (only runs once)
-        if (!db.Users.Any(u => u.UserName == "abdulmussawir"))
-        {
-            var hasher = new PasswordHasher<ApplicationUser>();
-            var adminUser = new ApplicationUser
-            {
-                UserName = "abdulmussawir",
-                CNIC = "4210148778829",
-                Email = "abdulmussawir@hotmail.com",
-                RoleTemplateId = 1,
-                EmailConfirmed = true,
-                DateCreated = DateTime.UtcNow
-            };
-            adminUser.PasswordHash = hasher.HashPassword(adminUser, "123456");
-            db.Users.Add(adminUser);
-            db.SaveChanges();
-
-            Console.WriteLine("👤 Default admin user created.");
-        }
     }
     catch (Exception ex)
     {
