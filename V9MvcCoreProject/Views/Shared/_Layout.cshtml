@@ -242,14 +242,20 @@
             font-size: 14px;
         }
 
-        /* ===================== OPTIONAL ===================== */
+        /* ===================== OPTIONAL (responsive movement) ===================== */
         .optional {
             transition: margin-left 0.3s ease;
             margin-left: 0;
         }
 
-          .sidebar.open ~ .header .optional {
-            margin-left: 240px;
+        /* When sidebar opens */
+        .sidebar.open ~ .main .header .optional {
+            margin-left: 0px;
+        }
+
+        /* When sidebar closes */
+        .sidebar ~ .main .header .optional {
+            margin-left: 0;
         }
 
         /* ===================== HEADER ===================== */
@@ -406,52 +412,59 @@
                 color: #ccc;
             }
 
+        /* ===================== RESPONSIVE LAYOUT ===================== */
 
-        /* ===================== RESPONSIVE: between 769px and 1200px ===================== */
-        @@media (max-width: 1200px) and (min-width: 769px) {
+        /* --- RESPONSIVE ADJUSTMENTS --- */
 
-            .sidebar.open ~ .main .header,
-            .sidebar.open ~ .main #mainContent {
-                margin-left: 0 !important;
-            }
+        /* 🖥️ Large screens (≥1200px) */
+        @@media (min-width: 1650px) {
+           
+        }
 
-            .sidebar.open {
-                left: 0;
-            }
-
-            .main {
-                margin-left: 0 !important;
-            }
-
-            .optional {
-                margin-left: 25% !important;
+        /* 💻 Medium screens (992px to 1199px) */
+        @@media (max-width: 1650px) and (min-width: 1200px) {
+                    .sidebar.open ~ .main .header .optional {
+                margin-left: 6% !important;
             }
         }
 
-        /* ===================== RESPONSIVE ===================== */
-        @@media (max-width: 768px) {
-            .sidebar {
-                left: -240px;
-                width: 240px;
-            }
-
-                .sidebar.open ~ .main .header,
-                .sidebar.open ~ .main #mainContent {
-                    margin-left: 0 !important;
-                }
-
-                .sidebar.open {
-                    left: 0;
-                }
-
-            .main {
-                margin-left: 0 !important;
-            }
-
-            .optional {
-                margin-left: 50% !important;
+        /* 💻 Medium screens (992px to 1199px) */
+        @@media (max-width: 1199px) and (min-width: 992px) {
+                    .sidebar.open ~ .main .header .optional {
+                margin-left: 10% !important;
             }
         }
+
+        /* 📱 Tablets (768px to 991px) */
+        @@media (max-width: 991px) and (min-width: 768px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 17% !important;
+            }
+        }
+
+        /* 📲 Small screens (≤767px) */
+        @@media (max-width: 767px) and (min-width:481px) {
+                    .sidebar.open ~ .main .header .optional {
+                margin-left: 40% !important;
+            }
+        }
+
+        /* 📱 Extra-small devices (≤480px) */
+        @@media (max-width: 480px) {
+
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 22% !important;
+            }
+
+
+            .optional {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                display: flex;
+                justify-content: center;
+            }
+        }
+
     </style>
 </head>
 
