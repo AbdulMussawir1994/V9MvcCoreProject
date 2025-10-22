@@ -32,7 +32,8 @@ public class LogsMiddleware
     public async Task InvokeAsync(HttpContext context, ILogService log)
     {
         var logId = Guid.NewGuid().ToString();
-        context.Items["LogId"] = logId; // better than Session (stateless, thread-safe)
+        // context.Items["LogId"] = logId; // better than Session (stateless, thread-safe)
+        context.Session.SetString("LogId", logId);
 
         string reqBody = string.Empty;
         string resBody = string.Empty;

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace V9MvcCoreProject.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialSeed : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,7 @@ namespace V9MvcCoreProject.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: true),
                     ActionMethodName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsMenuItem = table.Column<bool>(type: "bit", nullable: true),
-                    MenuReferenceName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                    MenuReferenceName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,7 +222,7 @@ namespace V9MvcCoreProject.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LogId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Action = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     ActionMethod = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     NewValueJson = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
@@ -408,8 +408,9 @@ namespace V9MvcCoreProject.Migrations
                 {
                     { 1, "PermissionTemplate", 1, "Add Role", true, true, "User Permission" },
                     { 2, "ChangePermissionTemplate", 1, "Change Role", true, true, "User Permission" },
-                    { 3, "Index", 2, "Index", true, true, "Home" },
-                    { 4, "Privacy", 2, "Privacy", true, true, "Home" }
+                    { 3, "UpdatePermissionTemplate", 1, "Update Role Template", true, null, "User Permission" },
+                    { 4, "Index", 2, "Index", true, true, "Home" },
+                    { 5, "Privacy", 2, "Privacy", true, true, "Home" }
                 });
 
             migrationBuilder.InsertData(
@@ -420,7 +421,7 @@ namespace V9MvcCoreProject.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "CNIC", "City", "ConcurrencyStamp", "CreatedBy", "DateCreated", "Email", "EmailConfirmed", "IsActive", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImageUrl", "RoleTemplateId", "SecurityStamp", "State", "TwoFactorEnabled", "UpdatedBy", "UserName" },
-                values: new object[] { 1, 0, "4210148778829", null, "7270a0d8-ee2e-49af-b11d-2a78051b8753", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEPlyHEyByFzD3b2bD/RZt6YIbtMhjFcDtdFXGfuDk/UUiuedFk6hxE+AzC318EEiIA==", null, false, null, 1, "IIDB6BYTZ3F7ASCXIME2AO6PMXQLXDU3", null, false, null, "abdulmussawir" });
+                values: new object[] { 1, 0, "4210148778829", null, "7270a0d8-ee2e-49af-b11d-2a78051b8753", null, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "abdul_mussawir@hotmail.com", true, true, false, null, "ABDUL_MUSSAWIR@HOTMAIL.com", "ABDULMUSSAWIR", "AQAAAAIAAYagAAAAEDRGpl6liVr+GCYnku86JBaVe8k6MOB0XMK3fvBUsUyRIdVNm76dM496Pgj8cHC8Lg==", null, false, null, 1, "IIDB6BYTZ3F7ASCXIME2AO6PMXQLXDU3", null, false, null, "abdulmussawir" });
 
             migrationBuilder.InsertData(
                 table: "FormDetail",
@@ -443,8 +444,9 @@ namespace V9MvcCoreProject.Migrations
                 {
                     { 1, "Permission", 1, true, 1 },
                     { 2, "Permission", 2, true, 1 },
-                    { 3, "ViewsHom", 3, true, 1 },
-                    { 4, "ViewsHom", 4, true, 1 }
+                    { 3, "Permission", 3, true, 1 },
+                    { 4, "ViewsHom", 4, true, 1 },
+                    { 5, "ViewsHom", 5, true, 1 }
                 });
 
             migrationBuilder.CreateIndex(

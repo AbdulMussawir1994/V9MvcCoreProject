@@ -111,5 +111,157 @@ namespace V9MvcCoreProject.Repository.Services
 
             return WebResponse<List<PermissionTemplateDto>>.Success(templates);
         }
+
+        public async Task<WebResponse<List<PermissionTemplateDto>>> GetAllPermissionTemplatesAsync()
+        {
+            var templates = await _context.PermissionTemplate
+                .AsNoTracking()
+                .Where(x => x.IsActive) // ✅ Optional: Filter only active ones if applicable
+                .OrderBy(x => x.TemplateName) // ✅ Improves UX consistency
+                .Select(x => new PermissionTemplateDto
+                {
+                    Id = x.Id,
+                    TemplateName = x.TemplateName
+                })
+                .ToListAsync();
+
+            if (!templates.Any())
+            {
+                return WebResponse<List<PermissionTemplateDto>>.UnSuccess(new List<PermissionTemplateDto>(), "No permission templates found.");
+            }
+
+            return WebResponse<List<PermissionTemplateDto>>.Success(
+                templates,
+                "Permission templates retrieved successfully.",
+                true
+            );
+        }
+
+        public async Task<WebResponse<PermissionTemplateViewModel>> GetPermissionTemplateById(int tempId)
+        {
+            var viewModel = new PermissionTemplateViewModel();
+
+            var templateDetails = await _context.PermissionTemplate.Where(x => x.Id == tempId).FirstOrDefaultAsync();
+
+            if (templateDetails is not null)
+            {
+                var activePermission = await _context.PermissionTemplateDetail
+                    .Where(x => x.TemplateId == tempId)
+                    .Select(x => x.FunctionalityId)
+                    .ToListAsync();
+
+                var response = (from fun in _context.ApplicationFunctionalities
+                                join form in _context.FormDetail on fun.FormId equals form.Id
+                                where form.IsActive == true && fun.IsActive == true
+                                select new PermissionTemplateDetails
+                                {
+                                    FormId = form.Id,
+                                    FormName = form.FormName,
+                                    FormDisplayName = form.DisplayName,
+                                    FunctionalityId = fun.Id,
+                                    FunctionalityName = fun.FunctionalityName,
+                                    IsAllow = false
+                                }).ToList();
+
+                foreach (var item in response.Where(t => activePermission.Contains(t.FunctionalityId)))
+                {
+                    item.IsAllow = true;
+                }
+                viewModel.Id = templateDetails.Id;
+                viewModel.TemplateName = templateDetails.TemplateName;
+                viewModel.IsActive = templateDetails.IsActive;
+                viewModel.permissionTemplates = response;
+                return WebResponse<PermissionTemplateViewModel>.Success(viewModel, "Success");
+
+            }
+            else
+            {
+                return WebResponse<PermissionTemplateViewModel>.UnSuccess(new PermissionTemplateViewModel(), "Permission Tempalte Not Found");
+            }
+
+        }
+
+        public async Task<WebResponse<ActionResponseDto>> UpdatePermissionTemplateAsync(PermissionTemplateViewModel model)
+        {
+
+            if (!model.IsActive)
+            {
+                string response = CheckUsersExistingRoles(model.Id);
+                if (!string.IsNullOrEmpty(response))
+                {
+                    return WebResponse<ActionResponseDto>.Failed(response);
+                }
+            }
+
+
+            var dbContextTransaction = _context.Database.BeginTransaction();
+            try
+            {
+                List<PermissionTemplateDetail> templateDetails = new List<PermissionTemplateDetail>();
+                var updatePermissionTemplate = await _context.PermissionTemplate.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+                if (updatePermissionTemplate is not null)
+                {
+                    updatePermissionTemplate.TemplateName = model.TemplateName;
+                    updatePermissionTemplate.IsActive = model.IsActive;
+                    updatePermissionTemplate.UpdatedBy = model.UpdatedBy;
+                    updatePermissionTemplate.UpdatedDate = DateTime.Now;
+                    await _context.SaveChangesAsync();
+
+                    _context.PermissionTemplateDetail.RemoveRange(_context.PermissionTemplateDetail.Where(x => x.TemplateId == model.Id));
+                    await _context.SaveChangesAsync();
+
+                    foreach (var item in model.permissionTemplates)
+                    {
+                        PermissionTemplateDetail templateDetail = new PermissionTemplateDetail
+                        {
+                            TemplateId = model.Id,
+                            FormName = item.FormName,
+                            FunctionalityId = item.FunctionalityId,
+                            IsAllow = item.IsAllow
+                        };
+                        templateDetails.Add(templateDetail);
+                    }
+
+                    _context.PermissionTemplateDetail.AddRange(templateDetails);
+                    await _context.SaveChangesAsync();
+                    await dbContextTransaction.CommitAsync();
+                    return WebResponse<ActionResponseDto>.Success(new ActionResponseDto()
+                    {
+                        Success = true,
+                        ErrorMessage = string.Empty
+                    });
+                }
+                else
+                {
+                    return WebResponse<ActionResponseDto>.Failed("No Record Found.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return WebResponse<ActionResponseDto>.Failed(ex.InnerException?.Message ?? ex.Message);
+            }
+
+        }
+
+        #region Private Methods
+
+
+        private string CheckUsersExistingRoles(int roleId)
+        {
+            var users = _context.Users
+                           .Where(u => u.RoleTemplateId == roleId)
+                           .Select(u => u.UserName)
+                           .ToList();
+
+            if (users.Any())
+            {
+                return $"Role cannot be inactive. Assigned Users: {string.Join(", ", users)}.";
+            }
+
+            return string.Empty;
+        }
+
+        #endregion
     }
 }

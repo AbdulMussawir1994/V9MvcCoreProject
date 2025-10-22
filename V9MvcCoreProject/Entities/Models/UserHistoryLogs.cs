@@ -3,7 +3,7 @@
 public class UserHistoryLogs
 {
     public long Id { get; set; }
-    public string LogId { get; set; }
+    public string? LogId { get; set; }
     public string Action { get; set; }
     public string ActionMethod { get; set; }
     public string NewValueJson { get; set; }

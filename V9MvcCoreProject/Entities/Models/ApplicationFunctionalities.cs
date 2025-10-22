@@ -9,5 +9,5 @@ public partial class ApplicationFunctionalities
 
     public string ActionMethodName { get; set; }
     public bool? IsMenuItem { get; set; }
-    public string MenuReferenceName { get; set; }
+    public string? MenuReferenceName { get; set; }
 }

@@ -40,7 +40,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <label for="Templates">Roles</label>
-                                @Html.DropDownList("Templates", (IEnumerable<SelectListItem>)ViewBag.Templates, "Please select Role", new { @class = "form-control" })
+                                @Html.DropDownList("Templates", (IEnumerable<SelectListItem>)ViewBag.PermissionTemplates, "Please select Role", new { @class = "form-control" })
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12">
                                 <button type="button" class="btn btn-primary" id="BtnSave" onclick="ShowPermissionTemplate()">Show Role Permissions</button>
@@ -163,5 +163,5 @@
 
 @section scripts
 {
-    <script src="@Url.Content("~/Scripts/ChangePermissionTemplate.js")"></script>
+    <script src="@Url.Content("~/ViewsScripts/ChangePermissionTemplate.js")"></script>
 }

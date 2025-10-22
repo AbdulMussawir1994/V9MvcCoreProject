@@ -81,7 +81,7 @@ public class BaseController : Controller
         history.Action = Action;
         history.ActionMethod = caller;
         history.UserId = this.GetLoggedInUserId();
-        history.LogId = HttpContext.Session.GetString("logId");
+        history.LogId = HttpContext.Session.GetString("LogId");
         status = await _ActivityLog.SaveActivityLogs(history);
         return status;
     }

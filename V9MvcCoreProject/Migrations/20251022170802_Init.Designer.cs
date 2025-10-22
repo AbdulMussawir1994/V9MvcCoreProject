@@ -12,8 +12,8 @@ using V9MvcCoreProject.DataDbContext;
 namespace V9MvcCoreProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251018180841_Initial Seed")]
-    partial class InitialSeed
+    [Migration("20251022170802_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -288,7 +288,6 @@ namespace V9MvcCoreProject.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MenuReferenceName")
-                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
@@ -320,6 +319,15 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 3,
+                            ActionMethodName = "UpdatePermissionTemplate",
+                            FormId = 1,
+                            FunctionalityName = "Update Role Template",
+                            IsActive = true,
+                            MenuReferenceName = "User Permission"
+                        },
+                        new
+                        {
+                            Id = 4,
                             ActionMethodName = "Index",
                             FormId = 2,
                             FunctionalityName = "Index",
@@ -329,7 +337,7 @@ namespace V9MvcCoreProject.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = 5,
                             ActionMethodName = "Privacy",
                             FormId = 2,
                             FunctionalityName = "Privacy",
@@ -511,7 +519,7 @@ namespace V9MvcCoreProject.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ABDUL_MUSSAWIR@HOTMAIL.com",
                             NormalizedUserName = "ABDULMUSSAWIR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPlyHEyByFzD3b2bD/RZt6YIbtMhjFcDtdFXGfuDk/UUiuedFk6hxE+AzC318EEiIA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDRGpl6liVr+GCYnku86JBaVe8k6MOB0XMK3fvBUsUyRIdVNm76dM496Pgj8cHC8Lg==",
                             PhoneNumberConfirmed = false,
                             RoleTemplateId = 1,
                             SecurityStamp = "IIDB6BYTZ3F7ASCXIME2AO6PMXQLXDU3",
@@ -752,7 +760,7 @@ namespace V9MvcCoreProject.Migrations
                         new
                         {
                             Id = 3,
-                            FormName = "ViewsHom",
+                            FormName = "Permission",
                             FunctionalityId = 3,
                             IsAllow = true,
                             TemplateId = 1
@@ -762,6 +770,14 @@ namespace V9MvcCoreProject.Migrations
                             Id = 4,
                             FormName = "ViewsHom",
                             FunctionalityId = 4,
+                            IsAllow = true,
+                            TemplateId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            FormName = "ViewsHom",
+                            FunctionalityId = 5,
                             IsAllow = true,
                             TemplateId = 1
                         });
@@ -898,7 +914,6 @@ namespace V9MvcCoreProject.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("LogId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NewValueJson")

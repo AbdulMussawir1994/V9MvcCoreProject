@@ -234,8 +234,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         builder.Entity<ApplicationFunctionalities>(entity =>
         {
             entity.Property(e => e.ActionMethodName).HasMaxLength(50);
-            entity.Property(e => e.MenuReferenceName).HasMaxLength(150);
-
+            entity.Property(e => e.MenuReferenceName).HasMaxLength(150).IsRequired(false);
+            entity.Property(e => e.IsMenuItem).IsRequired(false);
             entity.Property(e => e.FunctionalityName).HasMaxLength(50);
         });
 
@@ -358,8 +358,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         builder.Entity<ApplicationFunctionalities>().HasData(
             new ApplicationFunctionalities { Id = 1, FunctionalityName = "Add Role", FormId = 1, IsActive = true, ActionMethodName = "PermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" },
             new ApplicationFunctionalities { Id = 2, FunctionalityName = "Change Role", FormId = 1, IsActive = true, ActionMethodName = "ChangePermissionTemplate", IsMenuItem = true, MenuReferenceName = "User Permission" },
-            new ApplicationFunctionalities { Id = 3, FunctionalityName = "Index", FormId = 2, IsActive = true, ActionMethodName = "Index", IsMenuItem = true, MenuReferenceName = "Home" },
-            new ApplicationFunctionalities { Id = 4, FunctionalityName = "Privacy", FormId = 2, IsActive = true, ActionMethodName = "Privacy", IsMenuItem = true, MenuReferenceName = "Home" }
+            new ApplicationFunctionalities { Id = 3, FunctionalityName = "Update Role Template", FormId = 1, IsActive = true, ActionMethodName = "UpdatePermissionTemplate", IsMenuItem = null, MenuReferenceName = "User Permission" },
+            new ApplicationFunctionalities { Id = 4, FunctionalityName = "Index", FormId = 2, IsActive = true, ActionMethodName = "Index", IsMenuItem = true, MenuReferenceName = "Home" },
+            new ApplicationFunctionalities { Id = 5, FunctionalityName = "Privacy", FormId = 2, IsActive = true, ActionMethodName = "Privacy", IsMenuItem = true, MenuReferenceName = "Home" }
         );
 
         // Seed PermissionTemplate
@@ -378,8 +379,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         builder.Entity<PermissionTemplateDetail>().HasData(
             new PermissionTemplateDetail { Id = 1, TemplateId = 1, FormName = "Permission", FunctionalityId = 1, IsAllow = true },
             new PermissionTemplateDetail { Id = 2, TemplateId = 1, FormName = "Permission", FunctionalityId = 2, IsAllow = true },
-            new PermissionTemplateDetail { Id = 3, TemplateId = 1, FormName = "ViewsHom", FunctionalityId = 3, IsAllow = true },
-            new PermissionTemplateDetail { Id = 4, TemplateId = 1, FormName = "ViewsHom", FunctionalityId = 4, IsAllow = true }
+            new PermissionTemplateDetail { Id = 3, TemplateId = 1, FormName = "Permission", FunctionalityId = 3, IsAllow = true },
+            new PermissionTemplateDetail { Id = 4, TemplateId = 1, FormName = "ViewsHom", FunctionalityId = 4, IsAllow = true },
+            new PermissionTemplateDetail { Id = 5, TemplateId = 1, FormName = "ViewsHom", FunctionalityId = 5, IsAllow = true }
         );
     }
 }

@@ -11,6 +11,9 @@ public class WebResponse<T> //where T : class (When you use Generic type respons
 
     public static WebResponse<T> Failed(string message = "Error", bool isSuccess = false)
         => new WebResponse<T> { Message = message, IsSuccess = isSuccess };
+
+    public static WebResponse<T> UnSuccess(T value, string message = "UnSuccess", bool isSuccess = false)
+        => new WebResponse<T> { Value = value, Message = message, IsSuccess = isSuccess };
 }
 
 

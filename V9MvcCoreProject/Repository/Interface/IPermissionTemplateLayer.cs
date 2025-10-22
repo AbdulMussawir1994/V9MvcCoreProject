@@ -10,4 +10,7 @@ public interface IPermissionTemplateLayer
     Task<WebResponse<ActionResponseDto>> SavePermissionTemplateAsync(PermissionTemplateViewModel model);
     Task<bool> TemplateNameExistsAsync(string TemplateName);
     Task<WebResponse<List<PermissionTemplateDto>>> GetPermissionTemplatesAsync();
+    Task<WebResponse<List<PermissionTemplateDto>>> GetAllPermissionTemplatesAsync();
+    Task<WebResponse<PermissionTemplateViewModel>> GetPermissionTemplateById(int tempId);
+    Task<WebResponse<ActionResponseDto>> UpdatePermissionTemplateAsync(PermissionTemplateViewModel model);
 }
