@@ -412,56 +412,68 @@
                 color: #ccc;
             }
 
-        /* ===================== RESPONSIVE LAYOUT ===================== */
-
-        /* --- RESPONSIVE ADJUSTMENTS --- */
-
-        /* 🖥️ Large screens (≥1200px) */
-        @@media (min-width: 1650px) {
-           
-        }
-
-        /* 💻 Medium screens (992px to 1199px) */
-        @@media (max-width: 1650px) and (min-width: 1200px) {
-                    .sidebar.open ~ .main .header .optional {
-                margin-left: 6% !important;
-            }
-        }
-
-        /* 💻 Medium screens (992px to 1199px) */
-        @@media (max-width: 1199px) and (min-width: 992px) {
-                    .sidebar.open ~ .main .header .optional {
-                margin-left: 10% !important;
-            }
-        }
-
-        /* 📱 Tablets (768px to 991px) */
-        @@media (max-width: 991px) and (min-width: 768px) {
+        /* ==================== RESPONSIVE LAYOUT  Base Styles (All Screens) ==================== */
+        /* ==================== 📱 Extra Small Devices (Phones Portrait) ==================== */
+        /* 0px – 575px */
+        @@media (min-width: 0px) and (max-width: 575px) {
             .sidebar.open ~ .main .header .optional {
-                margin-left: 17% !important;
-            }
-        }
-
-        /* 📲 Small screens (≤767px) */
-        @@media (max-width: 767px) and (min-width:481px) {
-                    .sidebar.open ~ .main .header .optional {
                 margin-left: 40% !important;
             }
         }
 
-        /* 📱 Extra-small devices (≤480px) */
-        @@media (max-width: 480px) {
-
+        /* ==================== 📱 Small Devices (Phones Landscape) ==================== */
+        /* 576px – 767px */
+        @@media (min-width: 576px) and (max-width: 767px) {
             .sidebar.open ~ .main .header .optional {
-                margin-left: 22% !important;
+                margin-left: 31% !important;
             }
+        }
 
+        /* ==================== 💻 Medium Devices (Tablets) ==================== */
+        /* 768px – 991px */
+        @@media (min-width: 768px) and (max-width: 991px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 20% !important;
+            }
+        }
 
-            .optional {
-                margin-left: auto !important;
-                margin-right: auto !important;
-                display: flex;
-                justify-content: center;
+        /* ==================== 🖥️ Large Devices (Small Desktops) ==================== */
+        /* 992px – 1199px */
+        @@media (min-width: 992px) and (max-width: 1199px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 12% !important;
+            }
+        }
+
+        /* ==================== 🖥️ Middle Large Devices (HD / FullHD) ==================== */
+        /* 1200px – 1399px */
+        @@media (min-width: 1200px) and (max-width: 1399px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 8% !important;
+            }
+        }
+
+        /* ==================== 🖥️ Extra Large Devices (HD / FullHD) ==================== */
+        /* 1400px – 1650px */
+        @@media (min-width: 1400px) and (max-width: 1649px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 5% !important;
+            }
+        }
+
+        /* ==================== 🖥️ 2K Displays (WQHD) ==================== */
+        /* 1650px – 1919px */
+        @@media (min-width: 1650px) and (max-width: 1919px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 0% !important;
+            }
+        }
+
+        /* ==================== 🖥️ 4K & Ultra-Wide Screens ==================== */
+        /* 1920px and above */
+        @@media (min-width: 1920px) {
+            .sidebar.open ~ .main .header .optional {
+                margin-left: 0% !important;
             }
         }
 
@@ -579,7 +591,7 @@
         </div>
 
         <div class="cust-footer">
-            &copy; All rights reserved, <strong>Codebase Technologies</strong> 2024
+            &copy; All rights reserved, <strong>Abdul Mussawir Technologies</strong> 2025
         </div>
     </div>
 
