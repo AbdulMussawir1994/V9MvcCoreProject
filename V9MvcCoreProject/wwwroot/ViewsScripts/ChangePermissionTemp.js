@@ -1,5 +1,5 @@
 ﻿jQuery(document).ready(function () {
-    
+
 });
 
 
@@ -44,7 +44,6 @@ function ConfirmUpdatePermissionTemplate() {
 }
 
 function UpdatePermissionTemplate() {
-    
     RemoveError();
     var TemplateName = $('#TemplateName').val();
     var TemplateId = $('#Id').val();
@@ -54,18 +53,22 @@ function UpdatePermissionTemplate() {
     $('#tbodyid tr').each(function () {
         var form = $(this).find('td').find('input[type="text"]').val();
         $(this).find('td').each(function () {
-            
+
             if ($(this).find('input[type="checkbox"]:checked').val() != undefined) {
+                debugger
                 var functionalityList = {}
                 functionalityList.FormName = form;
+                functionalityList.Id = $(this).find('input[type="checkbox"]:checked').attr('id');
                 functionalityList.FunctionalityId = $(this).find('input[type="checkbox"]:checked').val();
                 functionalityList.IsAllow = true;
+                functionalityList.FormDisplayName = $(this).find('input[type="checkbox"]:checked').data('formdisplayname');
+                functionalityList.FunctionalityName = $(this).find('input[type="checkbox"]:checked').data('functionalityname');
                 checkedList.push(functionalityList);
             }
 
         });
     });
-
+    debugger
     if (TemplateName == "") {
         ShowError("Please Enter Role Name");
     }
@@ -84,7 +87,7 @@ function UpdatePermissionTemplate() {
             url: "/Permission/UpdatePermissionTemplate",
             data: PermissionTemplateDTO,
             success: function (response) {
-                
+
                 if (response.success) {
                     swal.fire({
                         title: 'Success',
@@ -114,8 +117,6 @@ function UpdatePermissionTemplate() {
     }
 
 }
-
-
 
 function ShowError(errortext) {
     $('#errordiv').css('display', 'block');

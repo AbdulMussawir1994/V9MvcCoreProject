@@ -24653,13 +24653,17 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     font-weight: normal;
     font-size: 1.1rem;
     margin-top: 1.5rem; }
-  .swal2-popup .btn {
-    margin: 15px 5px 0; }
+    .swal2-popup .btn {
+        margin: 15px 5px 0;
+        border: 1px solid #9b9393;
+    }
   .swal2-popup .swal2-styled:focus {
     -webkit-box-shadow: none;
     box-shadow: none; }
-  .swal2-popup .swal2-actions {
-    margin: 1.5rem auto 1rem auto; }
+    .swal2-popup .swal2-actions {
+        margin: 1.5rem auto 1rem auto;
+        border-top: double;
+    }
 
 .swal2-container {
   overflow-y: hidden !important; }

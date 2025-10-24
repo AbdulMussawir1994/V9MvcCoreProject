@@ -130,7 +130,7 @@
                                                                     <td style='border: 1px solid #C0C0C0 !important;'>
                                                                         <div class="kt-checkbox-inline">
                                                                             <label class="kt-checkbox kt-checkbox--bold kt-checkbox--brand mb-0">
-                                                                                <input type="checkbox" id="@item.FunctionalityName" name="@item.FunctionalityName" value="@item.FunctionalityId" checked="@item.IsAllow">
+                                                                            <input type="checkbox" id="@item.FunctionalityName" data-functionalityname="@item.FunctionalityName" data-formdisplayname="@item.FormDisplayName" name="@item.FunctionalityName" value="@item.FunctionalityId" checked="@item.IsAllow">
                                                                                 <span></span>@item.FunctionalityName
                                                                             </label>
                                                                         </div>
@@ -163,5 +163,5 @@
 
 @section scripts
 {
-    <script src="@Url.Content("~/ViewsScripts/ChangePermissionTemplate.js")"></script>
+    <script src="@Url.Content("~/ViewsScripts/ChangePermissionTemp.js")"></script>
 }

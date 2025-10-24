@@ -192,6 +192,7 @@ p.ch-msg {
     letter-spacing: 0.5px;
     background: #fff;
     padding: 0 5px;
+    color: black;
 }
 .form-control {
     height: calc(1.5em + 1.3rem + 2px);
