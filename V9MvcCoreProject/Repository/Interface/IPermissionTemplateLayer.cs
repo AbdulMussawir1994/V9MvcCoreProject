@@ -13,4 +13,6 @@ public interface IPermissionTemplateLayer
     Task<WebResponse<List<PermissionTemplateDto>>> GetAllPermissionTemplatesAsync();
     Task<WebResponse<PermissionTemplateViewModel>> GetPermissionTemplateById(int tempId);
     Task<WebResponse<ActionResponseDto>> UpdatePermissionTemplateAsync(PermissionTemplateViewModel model);
+
+    Task<WebResponse<ActionResponseDto>> UpdatePermissionTemplateAsync1(PermissionTemplateViewModel newModel, PermissionTemplateViewModel oldModel);
 }

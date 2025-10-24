@@ -244,6 +244,88 @@ namespace V9MvcCoreProject.Repository.Services
 
         }
 
+        public async Task<WebResponse<ActionResponseDto>> UpdatePermissionTemplateAsync1(PermissionTemplateViewModel newModel, PermissionTemplateViewModel oldModel)
+        {
+            if (!newModel.IsActive)
+            {
+                string response = CheckUsersExistingRoles(newModel.Id);
+                if (!string.IsNullOrEmpty(response))
+                {
+                    return WebResponse<ActionResponseDto>.Failed(response);
+                }
+            }
+
+            using var dbContextTransaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // ✅ 1. Update main PermissionTemplate
+                var updatePermissionTemplate = await _context.PermissionTemplate
+                    .FirstOrDefaultAsync(x => x.Id == newModel.Id);
+
+                if (updatePermissionTemplate == null)
+                    return WebResponse<ActionResponseDto>.Failed("No record found.");
+
+                updatePermissionTemplate.TemplateName = newModel.TemplateName;
+                updatePermissionTemplate.IsActive = newModel.IsActive;
+                updatePermissionTemplate.UpdatedBy = newModel.UpdatedBy;
+                updatePermissionTemplate.UpdatedDate = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                // ✅ 2. Prepare easy lookup lists for comparison
+                var newAllowed = newModel.permissionTemplates
+                    .Where(x => x.IsAllow)
+                    .Select(x => x.FunctionalityId)
+                    .ToHashSet();
+
+                var oldAllowed = oldModel.permissionTemplates
+                    .Where(x => x.IsAllow)
+                    .Select(x => x.FunctionalityId)
+                    .ToHashSet();
+
+                // ✅ 3. Find new permissions to ADD (in new, not in old)
+                var toAdd = newAllowed.Except(oldAllowed).ToList();
+
+                // ✅ 4. Find permissions to REMOVE (in old, not in new)
+                var toRemove = oldAllowed.Except(newAllowed).ToList();
+
+                // ✅ 5. ADD new permissions
+                foreach (var funcId in toAdd)
+                {
+                    var newPermission = new PermissionTemplateDetail
+                    {
+                        TemplateId = newModel.Id,
+                        FunctionalityId = funcId,
+                        FormName = newModel.permissionTemplates
+                            .First(x => x.FunctionalityId == funcId).FormName,
+                        IsAllow = true,
+                    };
+                    await _context.PermissionTemplateDetail.AddAsync(newPermission);
+                }
+
+                // ✅ 6. REMOVE old permissions
+                var removeList = await _context.PermissionTemplateDetail
+                    .Where(x => x.TemplateId == newModel.Id && toRemove.Contains(x.FunctionalityId))
+                    .ToListAsync();
+
+                _context.PermissionTemplateDetail.RemoveRange(removeList);
+
+                // ✅ 7. Save all changes in one transaction
+                await _context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
+
+                return WebResponse<ActionResponseDto>.Success(new ActionResponseDto
+                {
+                    Success = true,
+                    ErrorMessage = string.Empty
+                });
+            }
+            catch (Exception ex)
+            {
+                await dbContextTransaction.RollbackAsync();
+                return WebResponse<ActionResponseDto>.Failed(ex.InnerException?.Message ?? ex.Message);
+            }
+        }
+
         #region Private Methods
 
 

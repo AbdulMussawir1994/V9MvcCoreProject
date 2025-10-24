@@ -100,6 +100,33 @@ public class PermissionController : BaseController
         }
     }
 
+    //[ServiceFilter(typeof(CheckUserPermission))]
+    //public async Task<JsonResult> UpdatePermissionTemplate(PermissionTemplateViewModel model)
+    //{
+    //    ActionResponseDto response = new ActionResponseDto()
+    //    {
+    //        ErrorMessage = String.Empty,
+    //        Success = true
+    //    };
+
+    //    try
+    //    {
+    //        model.CreatedBy = this.GetLoggedInUserId();
+    //        int RoleId = Convert.ToInt32(HttpContext?.User?.Claims?.Where(x => x.Type == "RoleId")?.SingleOrDefault()?.Value);
+
+    //        var permission = await _userAccessService.GetUserPermissionsByRoleIdAsync(RoleId);
+    //        var serializedPermissions = JsonConvert.SerializeObject(permission);
+    //        HttpContext?.Session?.SetString("UserPermissions", serializedPermissions);
+    //        await this.InsertActivityInsert(await _permission.GetPermissionTemplateById(model.Id), model, "UPDATE");
+    //        var serviceResponse = await _permission.UpdatePermissionTemplateAsync(model);
+    //        return new JsonResult(new { success = serviceResponse.IsSuccess, serviceResponse.Message, serviceResponse.Value });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return new JsonResult(new { success = false, Message = ex.Message, Data = "" });
+    //    }
+    //}
+
     [ServiceFilter(typeof(CheckUserPermission))]
     public async Task<JsonResult> UpdatePermissionTemplate(PermissionTemplateViewModel model)
     {
@@ -117,8 +144,11 @@ public class PermissionController : BaseController
             var permission = await _userAccessService.GetUserPermissionsByRoleIdAsync(RoleId);
             var serializedPermissions = JsonConvert.SerializeObject(permission);
             HttpContext?.Session?.SetString("UserPermissions", serializedPermissions);
-            await this.InsertActivityInsert(await _permission.GetPermissionTemplateById(model.Id), model, "UPDATE");
-            var serviceResponse = await _permission.UpdatePermissionTemplateAsync(model);
+
+            var getTemplates = await _permission.GetPermissionTemplateById(model.Id);
+
+            await this.InsertActivityInsert(getTemplates.Value, model, "UPDATE");
+            var serviceResponse = await _permission.UpdatePermissionTemplateAsync1(model, getTemplates.Value);
             return new JsonResult(new { success = serviceResponse.IsSuccess, serviceResponse.Message, serviceResponse.Value });
         }
         catch (Exception ex)

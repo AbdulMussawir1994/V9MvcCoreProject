@@ -37,10 +37,90 @@ function ConfirmUpdatePermissionTemplate() {
         cancelButtonClass: "btn btn-secondary"
     }).then((result) => {
         if (result.value) {
-            UpdatePermissionTemplate();
-
+           // UpdatePermissionTemplate();
+            UpdatePermissionTemplateWithCheck();
         }
     })
+}
+
+function UpdatePermissionTemplateWithCheck() {
+    RemoveError();
+
+    var TemplateName = $('#TemplateName').val();
+    var TemplateId = $('#Id').val();
+    var IsActive = $('#IsActive').is(':checked');
+    var PermissionTemplateDTO = {};
+    var checkedList = [];
+
+    $('#tbodyid tr').each(function () {
+        var form = $(this).find('td input[type="text"]').val();
+
+        // Loop through all checkboxes in this row
+        $(this).find('input[type="checkbox"]').each(function () {
+
+            debugger
+            var $checkbox = $(this);
+
+            var functionalityList = {};
+            functionalityList.FormName = form;
+            functionalityList.Id = $checkbox.attr('id');
+            functionalityList.FunctionalityId = $checkbox.val();
+            functionalityList.IsAllow = $checkbox.is(':checked'); // ✅ true if checked, false if unchecked
+            functionalityList.FormDisplayName = $checkbox.data('formdisplayname');
+            functionalityList.FunctionalityName = $checkbox.data('functionalityname');
+
+            checkedList.push(functionalityList);
+            console.log("Function", functionalityList);
+        });
+    });
+
+    if (TemplateName == "") {
+        ShowError("Please Enter Role Name");
+    }
+    else if (checkedList.length == 0) {
+        ShowError("Please Select Atleast 1 Permission Checkbox");
+    }
+    else {
+        RemoveError();
+        PermissionTemplateDTO.Id = TemplateId;
+        PermissionTemplateDTO.TemplateName = TemplateName;
+        PermissionTemplateDTO.IsActive = IsActive;
+        PermissionTemplateDTO.permissionTemplates = checkedList;
+
+        $.ajax({
+            type: "POST",
+            url: "/Permission/UpdatePermissionTemplate",
+            data: PermissionTemplateDTO,
+            success: function (response) {
+
+                if (response.success) {
+                    swal.fire({
+                        title: 'Success',
+                        text: 'Request has been created Successfully',
+                        type: "success",
+                        allowOutsideClick: false,
+                        closeOnClickOutside: false,
+                        buttonsStyling: false,
+
+                        confirmButtonText: "<i class='la la-check-circle'></i>ok",
+                        confirmButtonClass: "btn btn-default",
+
+                        showCancelButton: false
+                    }).then((result) => {
+                        if (result.value) {
+                            var url = "/Permission/ChangePermissionTemplate";
+                            window.location.replace(url);
+                        }
+                    })
+                }
+                else {
+                    showError(response.ErrorMessage);
+                }
+            },
+
+        });
+    }
+
 }
 
 function UpdatePermissionTemplate() {
