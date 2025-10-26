@@ -6,3 +6,14 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+<div class="form-group" style="width:10%">
+    <select id="listId" name="listId" class="form-control">
+        <option value="">Select List</option>
+    </select>
+</div>
+
+@section scripts{
+    <script src="@Url.Content("~/ViewsScripts/Index.js")"></script>
+}

@@ -1060,17 +1060,18 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-end, body.swal2-no-backdrop .sw
 }
 
 .swal2-content {
-  z-index: 1;
-  -webkit-box-pack: center;
-          justify-content: center;
-  margin: 0;
-  padding: 0;
-  color: #545454;
-  font-size: 1.125em;
-  font-weight: 300;
-  line-height: normal;
-  text-align: center;
-  word-wrap: break-word;
+    z-index: 1;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    color: #545454;
+    font-size: 1.125em;
+    font-weight: 300;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+    border-top: double;
 }
 
 .swal2-input,
